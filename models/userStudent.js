@@ -9,7 +9,7 @@ const UserStudentSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	hasLogged:{
+	firstTimeLogged:{
 		type: Boolean,
 		default: false 
 	}

@@ -7,7 +7,6 @@ const PostulateSchema = mongoose.Schema({
 	},
 	birthday:{
 		type: Date,
-		default: Date.now,
 		required: true
 	},
 	email:{

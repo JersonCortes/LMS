@@ -2,17 +2,19 @@ const express = require('express')
 const router = express.Router()
 
 const UserStudent = require('../models/userStudent')
-
+const HashPassword = require('../services/encrypt')
 
 router.post('/', async (req,res) => {
-	//creates a new postulate with the data in the request body
+
+	const hashedPassword = await HashPassword(req.body.birthday)
+
+
 	const studentUser = new UserStudent({
 		username: req.body.username,
-		password: "123",
+		password: hashedPassword
 	})
-	//Sends the data to the database or responds with error
+
 	try{
-		console.log(req.body.username)
 		const savedPostulate = await studentUser.save()
 		res.json(savedPostulate)
 		

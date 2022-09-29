@@ -23,5 +23,10 @@ const routesR = require('./api-routes/postulateRevision-routes')
 
 app.use('/postulateRevision', routesR)
 
+const routesL = require('./api-routes/login')
+
+app.use('/login', routesL)
+
+
 
 app.listen(3000)
