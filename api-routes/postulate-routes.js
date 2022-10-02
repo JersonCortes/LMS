@@ -21,7 +21,8 @@ const cpUpload = upload.fields([{ name: 'schoolCert', maxCount: 1 }, { name: 'cu
 router.post('/', cpUpload, async (req,res) => {
 	//creates a new postulate with the data in the request body
 	const postulate = new Postulates({
-		name: req.body.name,
+		firstname: req.body.firstname,
+		lastname: req.body.lastname,
 		birthday: req.body.birthday,
 		email: req.body.email,
 		certHighschool:{

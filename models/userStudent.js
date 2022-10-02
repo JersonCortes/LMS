@@ -9,6 +9,13 @@ const UserStudentSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	registerNumber:{
+		type: String,
+		required: true
+	},
+	group:{
+		type: String
+	},	
 	firstTimeLogged:{
 		type: Boolean,
 		default: false 
