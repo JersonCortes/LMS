@@ -17,7 +17,8 @@ router.post('/', async (req,res) => {
 	const studentUser = new UserStudent({
 		username: req.body.firstname,
 		password: hashedPassword,
-		registerNumber: register
+		registerNumber: register,
+		group: 1
 	})
 	
 
