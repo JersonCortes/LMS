@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const schedule = require("node-schedule")
 
 require('dotenv').config({ path: 'config/.env' })
 
@@ -33,6 +34,16 @@ const routesGroupAssignation = require('./api-routes/studentGroupAssignation')
 
 app.use('/groups', routesGroupAssignation)
 
+const routesTimeAssignment = require('./api-routes/timeAssignment')
 
+app.use('/timeAssignment', routesTimeAssignment)
+
+
+
+const date = new Date('2022-10-06T01:23:00')
+
+schedule.scheduleJob(date,()=>{
+	console.log("Se ha acabado el semestre")
+})
 
 app.listen(3000)
