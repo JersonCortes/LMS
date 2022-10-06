@@ -56,7 +56,8 @@ router.post('/', cpUpload, async (req,res) => {
 // Calls for all postulates in the database
 router.get('/', async (req,res)=>{
 	try{
-		const postulates = await Postulates.find()
+		const postulates = await Postulates.find({},{birthdayCert:0,antidoping:0,curp:0,certHighschool:0})
+		console.log("a")
 		res.json(postulates)
 	}catch(err){
 		res.json({ message : err })

@@ -29,6 +29,10 @@ const routesL = require('./api-routes/login')
 
 app.use('/login', routesL)
 
+const routesGroupAssignation = require('./api-routes/studentGroupAssignation')
+
+app.use('/groups', routesGroupAssignation)
+
 
 
 app.listen(3000)
