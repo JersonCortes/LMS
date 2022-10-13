@@ -1,13 +1,16 @@
-const mongoose = require('mongoose')
+mongoose = require('mongoose')
 
 const PostulateSchema = mongoose.Schema({
-	name: {
+	firstname: {
+		type: String,
+		required: true
+	},
+	lastname: {
 		type: String,
 		required: true
 	},
 	birthday:{
 		type: Date,
-		default: Date.now,
 		required: true
 	},
 	email:{

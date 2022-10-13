@@ -2,20 +2,41 @@ const express = require('express')
 const router = express.Router()
 
 const UserStudent = require('../models/userStudent')
+const Postulates = require('../models/postulates')
+
+const HashPassword = require('../services/encrypt')
+const GenerateRegister = require('../services/registerGenerator')
+const RegisterCount = require('../models/studentRegisterCount')
 
 
 router.post('/', async (req,res) => {
-	//creates a new postulate with the data in the request body
+	const hashedPassword = await HashPassword(req.body.birthday)
+		
+	const register = await GenerateRegister()
+
 	const studentUser = new UserStudent({
-		username: req.body.username,
-		password: "123",
+		username: req.body.firstname,
+		password: hashedPassword,
+		registerNumber: register,
+		group: 1
 	})
-	//Sends the data to the database or responds with error
+	
+
+	let studentCount = ""
+
+	studentCount = register
+	studentCount = studentCount.substring(2)
+		
 	try{
-		console.log(req.body.username)
 		const savedPostulate = await studentUser.save()
+			
+		await Postulates.findOneAndDelete({ email: req.body.email})
+	
 		res.json(savedPostulate)
 		
+		await RegisterCount.findOneAndUpdate({registerCount: studentCount})
+
+
 	}catch(err){
 		res.json({ message : err })
 	}	
