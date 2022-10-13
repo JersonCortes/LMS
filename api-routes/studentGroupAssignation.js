@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
-
 const UserStudent = require('../models/userStudent')
+const Group = require('../models/groups')
+
 
 router.get('/', async (req,res) => {
 	try{
@@ -26,4 +27,18 @@ router.patch('/', async (req,res) => {
 	}	
 })
 
+router.post('/create', async (req,res) => {
+	try{
+		const groups = new Group({
+			group:req.body.group
+		})
+
+		await groups.save()
+
+		res.status(200).json(groups)
+
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
 module.exports = router

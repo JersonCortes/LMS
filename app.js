@@ -38,12 +38,12 @@ const routesTimeAssignment = require('./api-routes/timeAssignment')
 
 app.use('/timeAssignment', routesTimeAssignment)
 
+const subjects = require('./api-routes/subjects')
 
+app.use('/subjects', subjects)
 
-const date = new Date('2022-10-06T01:23:00')
+const classrooms = require('./api-routes/classroom')
 
-schedule.scheduleJob(date,()=>{
-	console.log("Se ha acabado el semestre")
-})
+app.use('/classrooms', classrooms)
 
 app.listen(3000)

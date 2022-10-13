@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const TimeAssignments = require('../models/timeAssignments')
+const SetDates = require('../services/endsemester')
 
 router.get('/', async (req,res) => {
 	try{
@@ -20,15 +21,13 @@ router.post('/', async (req,res) => {
 			startSemester: req.body.startSemester,
 			endSemester: req.body.endSemester,
 			startFirstPartial: req.body.startFirstPartial,
-			endFirstPartial: req.body.endFirstPartial,
 			startSecondPartial: req.body.startSecondPartial,
-			endSecondPartial: req.body.endSecondPartial,
 			startThirdPartial: req.body.startThirdPartial,
-			endThirdPartial: req.body.endThirdPartial
 		})
+		
+		SetDates(req.body.startFirstPartial,req.body.startSecondpartial,req.body.startThirdPartial, req.body.endSemester)
 
 		const savedDate = await dates.save()
-		
 
 		res.status(200).json(savedDate)
 
@@ -43,12 +42,10 @@ router.patch('/', async (req,res) => {
 			startSemester: req.body.startSemester,
 			endSemester: req.body.endSemester,
 			startFirstPartial: req.body.startFirstPartial,
-			endFirstPartial: req.body.endFirstPartial,
 			startSecondPartial: req.body.startSecondPartial,
-			endSecondPartial: req.body.endSecondPartial,
 			startThirdPartial: req.body.startThirdPartial,
-			endThirdPartial: req.body.endThirdPartial
 		})
+
 		res.status(200).json(dates)
 
 	}catch(err){
