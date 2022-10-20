@@ -46,4 +46,14 @@ const classrooms = require('./api-routes/classroom')
 
 app.use('/classrooms', classrooms)
 
+const publication = require('./api-routes/publication')
+
+app.use('/publication', publication)
+
+const assignments = require('./api-routes/assignments')
+
+app.use('/assignment', assignments)
+
+
+
 app.listen(3000)
