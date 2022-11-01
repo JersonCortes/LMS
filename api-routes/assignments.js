@@ -13,9 +13,9 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 			register:req.body.register,
 			class:req.body.class,
 			date:req.body.date,
-			files:{
+			files:[{
 				data:fs.readFileSync(req.files[0].path),
-			}
+			}]
 	})
 
 	try{
@@ -28,7 +28,6 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 		res.json({ message : err })
 
 	}
-
 })
 
 module.exports = router

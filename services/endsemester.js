@@ -6,6 +6,11 @@ const setDates = (startFirstPartial,startSecondPartial, startThirdPartial, EndSe
 		console.log("Funciona")
 	})
 
+
+	schedule.scheduleJob(startSecondPartial,()=>{
+		console.log("Funciona")
+	})
+
 	schedule.scheduleJob(startThirdPartial,()=>{
 		console.log("Funciona la segunda")
 	})
