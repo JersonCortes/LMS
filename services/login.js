@@ -7,6 +7,7 @@ login = async (password,hash, user)=>{
 	return new Promise((resolve,reject)=>{
 
 		bcrypt.compare(password, hash, function(err, result) {
+		
 			if(result==true){
 				jwt.sign({user:user.username}, "secretpass", { algorithm: 'HS256'}, function(err, token) {
 					if(err) {
@@ -16,6 +17,7 @@ login = async (password,hash, user)=>{
 					resolve(token)
 				})
 			}else return err
+
 		})
 	})
 }

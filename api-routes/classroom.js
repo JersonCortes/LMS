@@ -20,4 +20,14 @@ router.post('/', async (req,res) => {
 	}	
 })
 
+router.get('/', async (req,res) => {
+	try{
+		const classrooms = await Postulates.find({},{birthdayCert:0,antidoping:0,curp:0,certHighschool:0})
+	
+		res.status(200).json(classrooms)
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
+
 module.exports = router
