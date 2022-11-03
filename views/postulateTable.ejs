@@ -63,11 +63,89 @@
         <main class="d-flex flex-nowrap"> 
             
             <!--Content-->
-            <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example"></div>
-                <div class="container" >
-                    <%- include('include/_postulateTable')%>
-                </div>
-            </div>
+            <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example"></div>		
+		<div class="container pt-5">
+		        <!-- form handling -->
+		        <table class="table ">
+		        	<thead class="thead-dark ">
+				  		<tr>
+		                    			<th scope="col">Nombre</th>
+		                  			<th scope="col">Apellido</th>
+		                   			<th scope="col">Correo</th>
+		                   			<th scope="col">Nacimiento</th>
+		                    			<th scope="col">CURP</th>
+		                  			<th scope="col">Antidopaje</th>
+		                   			<th scope="col">Cert. Secundaria</th>
+		                   			<th scope="col">Cert. Nacimiento</th>
+							<th scope="col">Aceptar</th>
+		
+						</tr>
+		                </thead>
+		                
+		
+				<tbody>
+					<% for(var i=0; i< postulates.length; i++){ %>
+			
+			        	        	<tr>
+								<form action="/api/postulateRevision" method="POST" class="table-responsive" id="form1">
+								<td><input type="text" value="<%= postulates[i].firstname %>" readonly="readonly" name="firstname"/></td>
+			       		             		<td><%= postulates[i].lastname %></td>
+			                    			<td><input type="text" value="<%= postulates[i].email %>" readonly="readonly" name="email"/></td>
+			                	    		<td><input type="text" value="<%= postulates[i].birthday.substring(0,10) %>" readonly="readonly" name="birthday" /></td>
+					  			</form>
+								<td>
+									<form action="/api/postulate/curp/<%= postulates[i]._id %>" method="GET" class="table-responsive" id="formCurp">
+										<button class="btn btn-primary" type="submit" form="formCurp">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+  										<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+  										<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+										</svg>
+										</button>
+									</form>
+								</td>
+								<td>
+									<form action="/api/postulate/antidoping/<%= postulates[i]._id %>" method="GET" class="table-responsive" id="formAntidoping">
+									<button class="btn btn-primary" type="submit" form="formAntidoping">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+  										<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+  										<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+										</svg>
+									</button>
+					  				</form>
+								</td>
+								<td>
+									<form action="/api/postulate/highschoolCertificate/<%= postulates[i]._id %>" method="GET" class="table-responsive" id="formCertHighSchool">
+									<button class="btn btn-primary" type="submit"form="formCertHighSchool">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+  										<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+  										<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+										</svg></button>
+					  				</form>
+								</td>
+								<td>
+									<form action="/api/postulate/birthdayCertificate/<%= postulates[i]._id %>" method="GET" class="table-responsive" id="formCertBirthday">
+									<button class="btn btn-primary" type="submit"form="formCertBirthday">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-download" viewBox="0 0 16 16">
+  										<path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+  										<path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+										</svg>
+									</button>
+					  				</form>
+								</td>
+								<td>
+									<button type="submit" class="btn btn-success" form="form1">
+										<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+										<path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+										</svg>
+									</button>
+								</td>
+							</tr>
+					<% } %>
+		                </tbody>
+			</table>
+
+		</div>
+	    </div>
             <script src="js/bootstrap.bundle.min.js"></script>  
             <script src="js/sidebars.js"></script>  
         </main>

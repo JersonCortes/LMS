@@ -57,7 +57,6 @@ router.post('/', cpUpload, async (req,res) => {
 router.get('/', async (req,res)=>{
 	try{
 		const postulates = await Postulates.find({},{birthdayCert:0,antidoping:0,curp:0,certHighschool:0})
-		console.log("a")
 		res.json(postulates)
 	}catch(err){
 		res.json({ message : err })
@@ -95,6 +94,7 @@ router.get('/curp/:postulateId', async (req,res)=>{
 		res.setHeader("Content-Type",postulateFile.curp.contentType)	
 		res.setHeader("Content-Disposition","inline; filename=certificado.pdf")
 		res.send(postulateFile.curp.data)
+		console.log("entro")
 	}catch(err){
 		res.json({ message : err })
 	}
@@ -102,6 +102,7 @@ router.get('/curp/:postulateId', async (req,res)=>{
 
 router.get('/antidoping/:postulateId', async (req,res)=>{
 	try{
+		console.log("entro")
 		const postulateFile = await Postulates.findById(req.params.postulateId)
 		res.setHeader("Content-Type",postulateFile.antidoping.contentType)	
 		res.setHeader("Content-Disposition","inline; filename=certificado.pdf")
