@@ -11,7 +11,7 @@ const RegisterCount = require('../models/studentRegisterCount')
 
 router.post('/', async (req,res) => {
 	const hashedPassword = await HashPassword(req.body.birthday)
-		
+	console.log(req.body)		
 	const register = await GenerateRegister()
 
 	const studentUser = new UserStudent({
@@ -32,7 +32,7 @@ router.post('/', async (req,res) => {
 			
 		await Postulates.findOneAndDelete({ email: req.body.email})
 	
-		res.json(savedPostulate)
+		res.redirect('back')
 		
 		await RegisterCount.findOneAndUpdate({registerCount: studentCount})
 
