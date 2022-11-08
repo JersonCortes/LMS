@@ -17,7 +17,11 @@ const PublicationSchema = mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
-	date:{
+	publicationDate:{
+		type: Date,
+		default: Date.now
+	},
+	deliveryDate:{
 		type: Date
 	},
 	files:[{ 

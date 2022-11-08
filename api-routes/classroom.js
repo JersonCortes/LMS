@@ -5,11 +5,10 @@ const Classroom = require('../models/classroom')
 
 router.post('/', async (req,res) => {
 	try{
-		const name = req.body.name+" "+req.body.group
 		const classroom = new Classroom({
-			name:name,
 			subject:req.body.name,
-			group:req.body.group
+			group:req.body.group,
+			teacher:req.body.teacher
 		})	
 
 		await classroom.save()
@@ -22,7 +21,7 @@ router.post('/', async (req,res) => {
 
 router.get('/', async (req,res) => {
 	try{
-		const classrooms = await Postulates.find({},{birthdayCert:0,antidoping:0,curp:0,certHighschool:0})
+		const classrooms = await Classroom.find({})
 	
 		res.status(200).json(classrooms)
 	}catch(err){

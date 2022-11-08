@@ -18,6 +18,7 @@ router.post('/', async (req,res) => {
 		username: req.body.firstname,
 		password: hashedPassword,
 		registerNumber: register,
+		role:"student",
 		group: 1
 	})
 	

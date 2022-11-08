@@ -34,4 +34,21 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 
 })
 
+router.get('/', async (req,res) => {
+	
+	try{
+		const publication = await Publication.find({},{files:0,content:0})
+
+
+		res.status(200).json(publication)
+
+	}catch(err){
+		
+		res.json({ message : err })
+
+	}
+
+})
+
+
 module.exports = router

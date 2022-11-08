@@ -16,7 +16,10 @@ login = async (password,hash, user)=>{
 					}
 					resolve(token)
 				})
-			}else return err
+			}else {
+				console.log("wrong password")	
+				return err
+			}
 
 		})
 	})

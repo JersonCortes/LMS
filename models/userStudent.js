@@ -15,7 +15,10 @@ const UserStudentSchema = mongoose.Schema({
 	},
 	group:{
 		type: String
-	},	
+	},		
+	role:{
+		type: String, 
+	},
 	firstTimeLogged:{
 		type: Boolean,
 		default: false 

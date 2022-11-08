@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>LMS CETI</title>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/sidebars.css" rel="stylesheet">
+        <style>
+            
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+            }
+        }
+        .bi {
+            vertical-align: -.125em;
+            fill: currentColor;
+        }
+
+        .nav-scroller {
+            position: relative;
+            z-index: 2;
+            height: 2.75rem;
+            overflow-y: hidden;
+        }
+
+        .nav-scroller .nav {
+            display: flex;
+            flex-wrap: nowrap;
+            padding-bottom: 1rem;
+            margin-top: -1px;
+            overflow-x: auto;
+            text-align: center;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .table-responsive {
+            max-height:90vh;
+        }
+        
+        </style>
+
+        
+        <!-- Custom styles for this template -->
+        <link href="sidebars.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <main class="d-flex flex-nowrap"> 
+            
+            <!--Content-->
+            <div data-spy="scroll" data-target="#list-example" data-offset="0" class="scrollspy-example"></div>
+			<%- include('include/_navBar')%>
+                <div class="container" >
+                	
+			<%- include('include/_publication')%>
+
+		</div>
+            </div>
+            <script src="js/bootstrap.bundle.min.js"></script>  
+            <script src="js/sidebars.js"></script>  
+        </main>
+    </body>
+</html>

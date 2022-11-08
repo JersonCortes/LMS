@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 const ClassroomSchema = mongoose.Schema({
-	name:{
+	group:{
 		type:String
 	},
-	Group:{
+	subject:{
 		type:String
 	},
-	Subject:{
+	teacher:{
 		type:String
 	}
 })
