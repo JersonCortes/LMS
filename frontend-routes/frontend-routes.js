@@ -31,10 +31,55 @@ let url = "http://localhost:3000/api/postulate"
   	});
 })
 
-router.get('/createAssignment',(req,res)=>{
-    	res.render('homeworkCreation')
+router.get('/schedule',(req,res)=>{
+    	res.render('schedule')
 })
 
+router.get('/schedule',(req,res)=>{
+    	res.render('schedule')
+})
+
+router.get('/subjects',(req,res)=>{
+ 
+let url = "http://localhost:3000/api/classrooms"
+
+	axios.get(url, {
+    		params: {
+    		}
+  	})
+	.then(function (response) {
+    		console.log(response.data);
+		const publication = response.data
+		res.render('subjects',{publication: publication})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
+})
+
+router.get('/publications',(req,res)=>{
+ 
+let url = "http://localhost:3000/api/publication"
+
+	axios.get(url, {
+    		params: {
+    		}
+  	})
+	.then(function (response) {
+    		console.log(response.data);
+		const publication = response.data
+		res.render('publications',{publication: publication})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
+})
 
 //Exports for use in server.js
 module.exports = router
