@@ -11,7 +11,6 @@ const UserStudentSchema = mongoose.Schema({
 	},
 	registerNumber:{
 		type: String,
-		required: true
 	},
 	group:{
 		type: String

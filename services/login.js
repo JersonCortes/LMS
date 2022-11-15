@@ -9,7 +9,7 @@ login = async (password,hash, user)=>{
 		bcrypt.compare(password, hash, function(err, result) {
 		
 			if(result==true){
-				jwt.sign({user:user.username}, "secretpass", { algorithm: 'HS256'}, function(err, token) {
+				jwt.sign({uid:user._id}, process.env.JWT_KEY, function(err, token) {
 					if(err) {
 						console.error(err) 
 						reject(err)

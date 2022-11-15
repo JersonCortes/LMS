@@ -8,18 +8,20 @@ const Assignment = require('../models/assignment')
 const upload = multer({ dest: 'uploads/'})
 
 router.post('/',upload.array('files', 4), async (req,res) => {
-	if(req.files==null){console.log("entro")}
+	
 	const assignment = new Assignment({
 			register:req.body.register,
 			class:req.body.class,
-			date:req.body.date,
-			files:[{
-				data:fs.readFileSync(req.files[0].path),
-			}]
+			date:req.body.date
 	})
 
+	if(req.files){
+		req.files.forEach(function(files,index){
+			assignment.files[index] = {data:fs.readFileSync(req.files[index].path)}	
+		})
+	}
 	try{
-		await publication.save()
+		await assignment.save()
 
 		res.status(200).json(assignment)
 
