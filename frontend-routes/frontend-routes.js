@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
+const checkAuth = require('../services/auth')
 
 router.get('/',(req,res)=>{
     	res.render('login')
@@ -10,10 +11,10 @@ router.get('/postulationForm',(req,res)=>{
     	res.render('postulation_form')
 })
 
-router.get('/postulates',(req,res)=>{
+router.get('/postulates',checkAuth(['student']),(req,res)=>{
 
 
-let url = "http://localhost:3000/api/postulate"
+	let url = "http://localhost:3000/api/postulate"
 
 	axios.get(url, {
     		params: {
@@ -35,13 +36,9 @@ router.get('/schedule',(req,res)=>{
     	res.render('schedule')
 })
 
-router.get('/schedule',(req,res)=>{
-    	res.render('schedule')
-})
-
 router.get('/subjects',(req,res)=>{
  
-let url = "http://localhost:3000/api/classrooms"
+	let url = "http://localhost:3000/api/classrooms"
 
 	axios.get(url, {
     		params: {
@@ -62,7 +59,7 @@ let url = "http://localhost:3000/api/classrooms"
 
 router.get('/publications',(req,res)=>{
  
-let url = "http://localhost:3000/api/publication"
+	let url = "http://localhost:3000/api/publication"
 
 	axios.get(url, {
     		params: {

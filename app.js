@@ -67,6 +67,11 @@ const frontend = require('./frontend-routes/frontend-routes')
 
 app.use('/', frontend)
 
+const teachers = require('./api-routes/teachers')
+
+app.use('/api/teachers', teachers)
+
+
 
 
 app.listen(3000)
