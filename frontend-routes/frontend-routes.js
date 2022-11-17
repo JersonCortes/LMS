@@ -78,5 +78,9 @@ router.get('/publications',(req,res)=>{
   	});
 })
 
+router.get('/createPublication',(req,res)=>{
+
+		res.render('homeworkCreation')
+})
 //Exports for use in server.js
 module.exports = router
