@@ -3,6 +3,7 @@ const router = express.Router()
 
 const TimeAssignments = require('../models/timeAssignments')
 const SetDates = require('../services/endsemester')
+const FestiveDate = require('../models/festiveDates')
 
 router.get('/', async (req,res) => {
 	try{
@@ -52,4 +53,22 @@ router.patch('/', async (req,res) => {
 		res.json({ message : err })
 	}	
 })
+
+router.post('/festiveDate', async (req,res) => {
+	try{
+		const festiveDate = new FestiveDate({
+			event: req.body.event,
+			date: req.body.date,
+		})
+		
+		const savedFestiveDate = await festiveDate.save()
+
+		res.status(200).json(savedFestiveDate)
+
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
+
+
 module.exports = router

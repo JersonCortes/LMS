@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const GroupSchema = mongoose.Schema({
-	Group:{
+	group:{
 		type:String
 	}
 })

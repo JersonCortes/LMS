@@ -7,7 +7,7 @@ const HashPassword = require('../services/encrypt')
 router.get('/', async (req,res) => {
 		
 	try{
-		const Teachers = await User.find({role:'teacher'})
+		const Teachers = await User.find({role:'teacher'},{password:0,firstTimeLogged:0})
 			
 		res.json(Teachers)
 		
