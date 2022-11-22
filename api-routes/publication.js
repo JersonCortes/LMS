@@ -14,13 +14,15 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 			content:req.body.content,
 			class:req.body.class,
 			assignation:req.body.assignation,
-			date:req.body.date,
-			files:{
-				data:fs.readFileSync(req.files[0].path),
-			}
+			date:req.body.date	
 	})
 
-	console.log(req.files[0].filename)
+	if(req.files){
+		req.files.forEach(function(files,index){
+			publication.files[index] = {data:fs.readFileSync(req.files[index].path)}	
+		})
+	}
+
 	try{
 		await publication.save()
 
@@ -37,7 +39,7 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 router.get('/', async (req,res) => {
 	
 	try{
-		const publication = await Publication.find({},{files:0,content:0})
+		const publication = await Publication.find({class:req.body.publicationId},{files:0,content:0})
 
 
 		res.status(200).json(publication)
@@ -51,4 +53,18 @@ router.get('/', async (req,res) => {
 })
 
 
+router.get('/one', async (req,res) => {
+	
+	try{
+		const onePublication = await Publication.findById(req.body.publicationId,{files:0})
+		console.log(onePublication)
+		res.status(200).json(onePublication)
+
+	}catch(err){
+		
+		res.json({ message : err })
+
+	}
+
+})
 module.exports = router
