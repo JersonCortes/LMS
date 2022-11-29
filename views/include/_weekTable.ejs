@@ -1,7 +1,4 @@
 <div class="container">
-    <div class="timetable-img text-center">
-        <img src="img/content/timetable.png" alt="">
-    </div>
     <div class="table-responsive">
         <table class="table table-bordered text-center">
             <thead>
@@ -16,178 +13,105 @@
             </thead>
             <tbody>
                 <tr>
-                    <td class="align-middle">7:00</td>
-                    <td>
-                        <a href="">CLASE</a>
-                    </td>
-                    <td>
+			<td class="align-middle">7:00</td>
 
-                    </td>
+			<% for(var i=0; i< 5; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    <td>
+			<% } %>
 
-                    </td>
-                    <td>
 
-                    </td>
-                    <td>
-
-                    </td>
                 </tr>
 
                 <tr>
                     <td class="align-middle">7:50</td>
-                    <td>
+                    	<% for(var i=5; i< 10; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    </td>
-                    <td class="bg-light-gray">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
+			<% } %>
                 </tr>
 
                 <tr>
                     <td class="align-middle">8:40</td>
-                    <td>
-                       
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        
-                    </td>
-                    <td>
-                        
-                    </td>
+                   	<% for(var i=10; i< 15; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
+			<% } %>
                 </tr>
 
                 <tr>
                     <td class="align-middle">9:30</td>
-                    <td class="bg-light-gray">
+                 	<% for(var i=15; i< 20; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="bg-light-gray">
-
-                    </td>
+			<% } %>
 
                 </tr>
 
                 <tr>
                     <td class="align-middle">10:20</td>
-                    <td>
+                   	<% for(var i=20; i< 25; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="bg-light-gray">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-
+			<% } %>
                 </tr>
 
                 <tr>
                     <td class="align-middle">11:10</td>
-                    <td>
+                	<% for(var i=25; i< 30; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="bg-light-gray">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
+			<% } %>
 
                 </tr>
                 <tr>
                     <td class="align-middle">12:50</td>
-                    <td>
+                   	<% for(var i=30; i< 35; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="bg-light-gray">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
+			<% } %>
 
                 </tr>
                 <tr>
                     <td class="align-middle">13:40</td>
-                    <td>
+                    	<% for(var i=35; i< 40; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="bg-light-gray">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
-
+			<% } %>
                 </tr>
                 <tr>
                     <td class="align-middle">14:30</td>
-                    <td>
+                   	<% for(var i=40; i< 45; i++){ %>		
+			
+				<td>
+                        		<p><%=schedule.schedule[i]%></p>
+                    		</td>
 
-                    </td>
-                    <td>
-
-                    </td>
-                    <td class="bg-light-gray">
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td>
-
-                    </td>
+			<% } %>
 
                 </tr>
             </tbody>

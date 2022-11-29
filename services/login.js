@@ -18,7 +18,7 @@ login = async (password,hash, user)=>{
 				})
 			}else {
 				console.log("wrong password")	
-				return err
+				resolve(false)
 			}
 
 		})

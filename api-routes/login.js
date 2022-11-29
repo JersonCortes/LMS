@@ -9,22 +9,40 @@ const verifyToken = require('../services/verifyToken')
 
 router.post('/', async (req,res) => {
 	try{
-		console.log(req.body)
 		const user = await UserStudent.findOne({'registerNumber' :req.body.registerNumber})
-		const jwt = await Login(req.body.password, user.password, user)
-		console.log(user)
-		if(user.firstTimeLogged==false){
-	
-			res.status(200).cookie('jwt', jwt)
-			res.redirect('/changePassword')
+
+		if(user==null){
+			res.redirect('/login')
 		}else{
-			res.status(200).cookie('jwt', jwt)
-			res.redirect('/schedule')
-		}
+			const jwt = await Login(req.body.password, user.password, user)
 		
+			if(jwt==false){
+				res.redirect('/login')
+			}else{		
+				if(user.firstTimeLogged==false){
+						
+					res.status(200).cookie('jwt', jwt)
+					res.redirect('/changePassword')
+				}else{
+					res.status(200).cookie('jwt', jwt)
+					switch(user.role){
+					case "student":
+						res.redirect('/schedule')	
+					break
+					case "teacher":
+						res.redirect('/schedule')
+					break
+					case "admin":
+						res.redirect('/postulates')	
+					break
+					}	
+				}
+			}
+		}
 	
 
 	}catch(err){
+		console.log(err)
 		res.json({ message : err })
 	}	
 })
@@ -35,12 +53,22 @@ router.post('/password', async (req,res) => {
 		const token = req.cookies.jwt
 		const tokenData = await verifyToken(token)
 
-		await  UserStudent.findByIdAndUpdate(
+		const user = await  UserStudent.findByIdAndUpdate(
 			tokenData.uid,
 			{$set:{password: hashedPassword,firstTimeLogged:true}}
 		)
-		
-	res.status(200).json("Password Changed")
+	
+		switch(user.role){
+			case "student":			
+				res.redirect('/schedule')	
+			break
+			case "teacher":
+				res.redirect('/schedule')
+			break
+			case "admin":
+				res.redirect('/postulates')	
+			break
+		}	
 	
 	}catch(err){
 		res.json({ message : err })

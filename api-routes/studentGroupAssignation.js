@@ -32,8 +32,7 @@ router.post('/assignStudent', async (req,res) => {
 		console.log(req.body)
 		await UserStudent.findOneAndUpdate({'registerNumber': req.body.registerNumber},{group: req.body.group})
 		
-		res.status(200).json()
-
+		res.status(200).redirect("/assignGroups")
 	}catch(err){
 		res.json({ message : err })
 	}	
@@ -47,7 +46,7 @@ router.post('/create', async (req,res) => {
 
 		await groups.save()
 
-		res.status(200).json(groups)
+		res.status(200).redirect("/assignGroups")
 
 	}catch(err){
 		res.json({ message : err })

@@ -15,7 +15,7 @@ router.post('/', async (req,res) => {
 
 		await classroom.save()
 
-		res.status(200).json(classroom)
+		res.status(200).redirect('/assignTeacher')
 	}catch(err){
 		res.json({ message : err })
 	}	
@@ -28,6 +28,28 @@ router.get('/searchSubjects', async (req,res) => {
 
 		const group = await userStudent.findById(tokenData.uid,{password:0,registerNumber:0,role:0,_id:0,firstTimeLogged:0})
 		const subjects = await Classroom.find({group:group.group})
+	
+		res.status(200).json(subjects)
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
+
+router.get('/', async (req,res) => {
+	try{
+		
+		const subjects = await Classroom.find({})
+	
+		res.status(200).json(subjects)
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
+
+router.get('/:group', async (req,res) => {
+	try{
+	console.log("Grupo"+req.params.group)
+		const subjects = await Classroom.find({group:req.params.group},{teacher:0})
 	
 		res.status(200).json(subjects)
 	}catch(err){

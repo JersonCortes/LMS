@@ -7,7 +7,7 @@ const HashPassword = require('../services/encrypt')
 router.get('/', async (req,res) => {
 		
 	try{
-		const Admins = await User.find({role:'admins'})
+		const Admins = await User.find({role:'admin'})
 			
 		res.json(Admins)
 		
@@ -20,15 +20,16 @@ router.get('/', async (req,res) => {
 router.post('/', async (req,res) => {
 	const hashedPassword = await HashPassword(req.body.password)
 
-	const User = new User({
+	const adminUser = new User({
+		registerNumber: req.body.username,
 		username: req.body.username,
 		password: hashedPassword,
-		role:"admins"
+		role:"admin"
 	})
 	
 		
 	try{
-		const savedAdmin = await User.save()
+		const savedAdmin = await adminUser.save()
 			
 		res.json(savedAdmin)
 		

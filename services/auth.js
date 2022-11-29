@@ -10,7 +10,7 @@ const checkAuth = (roles) => async (req, res, next) => {
 	try{
 		if(req.cookies.jwt==null){
 			res.status(403)
-			res.redirect('/')
+			res.redirect('/login')
 		}else{
 			const token = req.cookies.jwt
 			const tokenData = await verifyToken(token)
