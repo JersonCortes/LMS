@@ -71,6 +71,13 @@ const teachers = require('./api-routes/teachers')
 
 app.use('/api/teachers', teachers)
 
+const admin = require('./api-routes/admin')
+
+app.use('/api/admin', admin)
+
+const assignSchedule = require('./api-routes/assignSchedule')
+
+app.use('/api/assignSchedule', assignSchedule)
 
 
 

@@ -13,7 +13,7 @@ router.post('/', async (req,res) => {
 
 		await subject.save()
 
-		res.status(200).json(subject)
+		res.status(200).redirect('/createSubject')
 	}catch(err){
 		res.json({ message : err })
 	}	

@@ -46,7 +46,7 @@ router.post('/', cpUpload, async (req,res) => {
 	//Sends the data to the database or responds with error
 	try{
 		const savedPostulate = await postulate.save()
-		res.json(savedPostulate)
+		res.redirect("/login")
 		
 	}catch(err){
 		res.json({ message : err })

@@ -20,7 +20,8 @@ router.get('/', async (req,res) => {
 router.post('/', async (req,res) => {
 	const hashedPassword = await HashPassword(req.body.password)
 
-	const User = new User({
+	const teacherUser = new User({
+		registerNumber: req.body.username,
 		username: req.body.username,
 		password: hashedPassword,
 		role:"teacher"
@@ -28,7 +29,7 @@ router.post('/', async (req,res) => {
 	
 		
 	try{
-		const savedTeacher = await User.save()
+		const savedTeacher = await teacherUser.save()
 			
 		res.json(savedTeacher)
 		

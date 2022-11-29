@@ -3,7 +3,7 @@ const router = express.Router()
 const axios = require('axios')
 const checkAuth = require('../services/auth')
 
-router.get('/',(req,res)=>{
+router.get('/login',(req,res)=>{
     	res.render('login')
 })
 
@@ -46,7 +46,7 @@ router.get('/assignTeacher',(req,res)=>{
 
 })
 
-router.get('/assignGroups',(req,res)=>{
+router.get('/assignGroups',checkAuth(['admin']),(req,res)=>{
 	function getUsers() {
 	  return axios.get('http://localhost:3000/api/groups');
 	}
@@ -54,21 +54,24 @@ router.get('/assignGroups',(req,res)=>{
 	function getAllGroups() {
 	  return axios.get('http://localhost:3000/api/groups/all');
 	}
-	
-	Promise.all([getUsers(), getAllGroups()])
+	function getAllClassrooms() {
+	  return axios.get('http://localhost:3000/api/classrooms');
+	}
+	Promise.all([getUsers(), getAllGroups(),getAllClassrooms])
 	  .then(function (results) {
 	    const students = results[0].data;
 	    const groups = results[1].data;
+	    const classrooms = results[2].data;
 	    res.render('studentGroupAssignation',{students: students, groups:groups})
 	});
 
 })
 
-router.get('/postulates',checkAuth(['student']),(req,res)=>{
+router.get('/postulates',checkAuth(['admin']),(req,res)=>{
 
 
 	let url = "http://localhost:3000/api/postulate"
-
+	
 	axios.get(url, {
     		params: {
     		}
@@ -86,7 +89,23 @@ router.get('/postulates',checkAuth(['student']),(req,res)=>{
 })
 
 router.get('/schedule',checkAuth(['student']),(req,res)=>{
-    	res.render('schedule')
+	let url = "http://localhost:3000/api/assignSchedule"
+
+	axios.get(url, {
+		data: { jwt:req.cookies.jwt 
+		}
+  	})
+	.then(function (response) {
+		const schedule = response.data
+		console.log(schedule)
+		res.render('schedule',{schedule: schedule})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
 })
 
 router.get('/subjects',(req,res)=>{
@@ -138,7 +157,6 @@ router.get('/publicationsOne',(req,res)=>{
 		}
 	})
 	.then(function (response) {
-    		console.log(response.data);
 		const publication = response.data
 		res.render('onePublication',{publication: publication})
   	})
@@ -153,6 +171,39 @@ router.get('/publicationsOne',(req,res)=>{
 router.get('/createPublication',(req,res)=>{
 
 		res.render('homeworkCreation')
+})
+
+router.get('/assignSchedule',(req,res)=>{
+	
+	function getAllGroups() {
+	  return axios.get('http://localhost:3000/api/groups/all');
+	}
+	
+	Promise.all([getAllGroups()])
+	  .then(function (results) {
+	    
+	    const groups = results[0].data;
+
+	    res.render('assignSchedule',{groups:groups})
+	});
+
+})
+router.get('/assignScheduleTable/:group',(req,res)=>{
+	function getGroupClassrooms() {
+	  return axios.get('http://localhost:3000/api/classrooms/'+req.params.group);
+	}
+	function getAllSubjects() {
+	  return axios.get('http://localhost:3000/api/subjects');
+	}
+	Promise.all([getGroupClassrooms(),getAllSubjects()])
+	  .then(function (results) {
+	    
+	    const classrooms = results[0].data;
+	    const subjects = results[1].data;
+
+	    res.render('include/_assignScheduleTable',{classrooms:classrooms, subjects:subjects})
+	});
+
 })
 //Exports for use in server.js
 module.exports = router

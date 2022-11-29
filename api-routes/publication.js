@@ -19,7 +19,10 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 
 	if(req.files){
 		req.files.forEach(function(files,index){
-			publication.files[index] = {data:fs.readFileSync(req.files[index].path)}	
+			publication.files[index] = {
+				data:fs.readFileSync(req.files[index].path),
+				contentType:req.files[index].mimetype,
+			}
 		})
 	}
 
@@ -41,7 +44,6 @@ router.get('/', async (req,res) => {
 	try{
 		const publication = await Publication.find({class:req.body.publicationId},{files:0,content:0})
 
-
 		res.status(200).json(publication)
 
 	}catch(err){
@@ -56,7 +58,7 @@ router.get('/', async (req,res) => {
 router.get('/one', async (req,res) => {
 	
 	try{
-		const onePublication = await Publication.findById(req.body.publicationId,{files:0})
+		const onePublication = await Publication.findById(req.body.publicationId,{ "files.data":0 })
 		console.log(onePublication)
 		res.status(200).json(onePublication)
 
@@ -66,5 +68,22 @@ router.get('/one', async (req,res) => {
 
 	}
 
+})
+router.get('/files/:publicationId', async (req,res)=>{
+	try{
+		const onePublication = await Publication.findOne({ "files._id": req.params.publicationId},{"files" : 1})
+		
+		onePublication.files.forEach(function(files,index){
+
+			if(onePublication.files[index]._id==req.params.publicationId){
+				res.setHeader("Content-Type",onePublication.files[index].contentType)	
+				res.setHeader("Content-Disposition","inline; filename=file.pdf")
+				res.send(onePublication.files[index].data)
+			}
+
+		})
+	}catch(err){
+		res.json({ message : err })
+	}
 })
 module.exports = router
