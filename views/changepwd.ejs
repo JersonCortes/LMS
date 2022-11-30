@@ -20,7 +20,7 @@
       <form action="api/login/password" method="POST">
 
         <div class="form-floating">
-          <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+          <input type="password" class="form-control" id="password" pattern=".*[0-9].*" placeholder="Password" name="password" title="Debe contener al menos un digito">
           <label for="floatingPassword">Contraseña</label>
         </div>
 
@@ -34,4 +34,8 @@
 
     
   </body>
+
+  <script>
+	
+  </script>
 </html>

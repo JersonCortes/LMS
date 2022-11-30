@@ -21,6 +21,9 @@ const UserStudentSchema = mongoose.Schema({
 	firstTimeLogged:{
 		type: Boolean,
 		default: false 
+	},
+	career:{
+		type: String,
 	}
 })
 
