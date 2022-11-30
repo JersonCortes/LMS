@@ -9,6 +9,9 @@ const SubjectSchema = mongoose.Schema({
 	},
 	hoursPerWeek:{
 		type:Number
+	},
+	career:{
+		type:String
 	}
 })
 

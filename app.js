@@ -75,9 +75,17 @@ const admin = require('./api-routes/admin')
 
 app.use('/api/admin', admin)
 
+const adminC = require('./api-routes/adminC')
+
+app.use('/api/adminC', adminC)
+
 const assignSchedule = require('./api-routes/assignSchedule')
 
 app.use('/api/assignSchedule', assignSchedule)
+
+const registerCount = require('./api-routes/addRegister')
+
+app.use('/api/registerCount', registerCount)
 
 
 

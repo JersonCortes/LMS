@@ -15,78 +15,6 @@ router.get('/postulationForm',(req,res)=>{
     	res.render('postulation_form')
 })
 
-router.get('/createSubject',(req,res)=>{
-    	res.render('createSubject')
-})
-
-router.get('/assignDate',(req,res)=>{
-    	res.render('assignDates')
-})
-
-router.get('/assignTeacher',(req,res)=>{
-
-	function getUsers() {
-	  return axios.get('http://localhost:3000/api/teachers');
-	}
-	
-	function getAllGroups() {
-	  return axios.get('http://localhost:3000/api/groups/all');
-	}	
-	function getAllSubjects() {
-	  return axios.get('http://localhost:3000/api/subjects');
-	}
-	
-	Promise.all([getUsers(), getAllGroups(), getAllSubjects()])
-	  .then(function (results) {
-	    const teachers = results[0].data;
-	    const groups = results[1].data;
-	    const subjects = results[2].data;
-	    res.render('assignTeacher',{teachers: teachers, groups:groups, subjects:subjects})
-	});
-
-})
-
-router.get('/assignGroups',checkAuth(['admin']),(req,res)=>{
-	function getUsers() {
-	  return axios.get('http://localhost:3000/api/groups');
-	}
-	
-	function getAllGroups() {
-	  return axios.get('http://localhost:3000/api/groups/all');
-	}
-	function getAllClassrooms() {
-	  return axios.get('http://localhost:3000/api/classrooms');
-	}
-	Promise.all([getUsers(), getAllGroups(),getAllClassrooms])
-	  .then(function (results) {
-	    const students = results[0].data;
-	    const groups = results[1].data;
-	    const classrooms = results[2].data;
-	    res.render('studentGroupAssignation',{students: students, groups:groups})
-	});
-
-})
-
-router.get('/postulates',checkAuth(['admin']),(req,res)=>{
-
-
-	let url = "http://localhost:3000/api/postulate"
-	
-	axios.get(url, {
-    		params: {
-    		}
-  	})
-	.then(function (response) {
-    		console.log(response.data);
-		res.render('postulateTable',{postulates: response.data})
-  	})
-  	.catch(function (error) {
-   		console.log(error);
-  	})
-  	.finally(function () {
-  	  // always executed
-  	});
-})
 
 router.get('/schedule',checkAuth(['student']),(req,res)=>{
 	let url = "http://localhost:3000/api/assignSchedule"
@@ -173,7 +101,58 @@ router.get('/createPublication',(req,res)=>{
 		res.render('homeworkCreation')
 })
 
-router.get('/assignSchedule',(req,res)=>{
+
+
+//GENERAL ADMIN ROUTES
+
+router.get('/postulates',checkAuth(['admin']),(req,res)=>{
+
+
+	let url = "http://localhost:3000/api/postulate"
+	
+	axios.get(url, {
+    		params: {
+    		}
+  	})
+	.then(function (response) {
+    		console.log(response.data);
+		res.render('postulateTable',{postulates: response.data})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
+})
+
+router.get('/assignGroups',checkAuth(['admin']),(req,res)=>{
+	function getUsers() {
+	  return axios.get('http://localhost:3000/api/groups');
+	}
+	
+	function getAllGroups() {
+	  return axios.get('http://localhost:3000/api/groups/all');
+	}
+	function getAllClassrooms() {
+	  return axios.get('http://localhost:3000/api/classrooms');
+	}
+	Promise.all([getUsers(), getAllGroups(),])
+	  .then(function (results) {
+	    const students = results[0].data;
+	    const groups = results[1].data;
+	    res.render('studentGroupAssignation',{students: students, groups:groups})
+	});
+
+})
+
+router.get('/assignDate',(req,res)=>{
+    	res.render('assignDates')
+})
+
+//CAREER ADMIN ROUTES
+
+router.get('/assignSchedule',checkAuth(['adminC']), (req,res)=>{
 	
 	function getAllGroups() {
 	  return axios.get('http://localhost:3000/api/groups/all');
@@ -188,7 +167,8 @@ router.get('/assignSchedule',(req,res)=>{
 	});
 
 })
-router.get('/assignScheduleTable/:group',(req,res)=>{
+
+router.get('/assignScheduleTable/:group',checkAuth(['adminC']),(req,res)=>{
 	function getGroupClassrooms() {
 	  return axios.get('http://localhost:3000/api/classrooms/'+req.params.group);
 	}
@@ -204,6 +184,32 @@ router.get('/assignScheduleTable/:group',(req,res)=>{
 	    res.render('include/_assignScheduleTable',{classrooms:classrooms, subjects:subjects})
 	});
 
+})
+
+router.get('/assignTeacher',checkAuth(['adminC']),(req,res)=>{
+	function getUsers() {
+	  return axios.get('http://localhost:3000/api/teachers',{data:{jwt:req.cookies.jwt}});
+	}
+	function getAllGroups() {
+	  return axios.get('http://localhost:3000/api/groups/all');
+	}	
+	function getSubjects() {
+	  return axios.get('http://localhost:3000/api/subjects',{data:{jwt:req.cookies.jwt}});
+	}
+	
+	Promise.all([getUsers(), getAllGroups(), getSubjects()])
+	  .then(function (results) {
+	    const teachers = results[0].data;
+	    const groups = results[1].data;
+	    const subjects = results[2].data;
+	    res.render('assignTeacher',{teachers: teachers, groups:groups, subjects:subjects})
+	});
+
+})
+
+router.get('/createSubject',checkAuth(['adminC']),(req,res)=>{
+    	
+	res.render('createSubject')
 })
 //Exports for use in server.js
 module.exports = router

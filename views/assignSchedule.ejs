@@ -21,11 +21,20 @@
 			
 	    	<div class="container overflow-auto" >
     <form action="api/assignSchedule" method="POST">
+
+						<select class="form-select mt-5" id="semesterSelector" name="semesterSelector" onchange=selectSemester()>	
+							<option value="" hidden>Elija un semestre</option>
+
+							<% for(var i=1; i<= 8; i++){ %>		
+							<option value="<%= i%>" > <%= i%></option>
+							<% } %>
+						</select>
+
 						<select class="form-select mt-5" id="groupSelector" onchange=test() name="group">	
 							<option value="" hidden>Elija un grupo</option>
 
 							<% for(var i=0; i< groups.length; i++){ %>		
-								<option value="<%= groups[i].group%>" > <%= groups[i].group%></option>
+							<option value="<%= groups[i].group%>" id="groupSelector<%=i%>" hidden> <%= groups[i].group%></option>
 							<% } %>
 						</select>
 
@@ -57,6 +66,7 @@
 
 	    <script>
 		let groupSelector = document.getElementById("groupSelector");
+		let semesterSelector = document.getElementById("semesterSelector");
 		//var myModal = new bootstrap.Modal('#exampleModalToggle', {});
 		//myModal.show();
 
@@ -71,6 +81,18 @@
 			xhr.open("GET", "/assignScheduleTable/"+groupSelector.value);
 			xhr.responseType = "text";
 			xhr.send();
+		}		
+
+		function selectSemester(){
+			let semester = semesterSelector.options[semesterSelector.selectedIndex].value;
+
+			for(let i=0;i<groupSelector.children.length-1;i++){
+				if(document.getElementById('groupSelector'+i).value.substring(0,1)==semester){
+					document.getElementById('groupSelector'+i).hidden = false	
+				}else{
+					document.getElementById('groupSelector'+i).hidden = true	
+				}
+			}
 		}
 	    </script>
         </main>

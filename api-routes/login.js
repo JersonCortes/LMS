@@ -35,6 +35,9 @@ router.post('/', async (req,res) => {
 					case "admin":
 						res.redirect('/postulates')	
 					break
+					case "adminC":
+						res.redirect('/assignSchedule')	
+					break
 					}	
 				}
 			}
@@ -49,6 +52,7 @@ router.post('/', async (req,res) => {
 
 router.post('/password', async (req,res) => {
 	try{
+
 		const hashedPassword = await HashPassword(req.body.password)
 		const token = req.cookies.jwt
 		const tokenData = await verifyToken(token)
@@ -67,6 +71,9 @@ router.post('/password', async (req,res) => {
 			break
 			case "admin":
 				res.redirect('/postulates')	
+			break
+			case "adminC":
+				res.redirect('/assignSchedule')	
 			break
 		}	
 	
