@@ -7,6 +7,7 @@ const FestiveDate = require('../models/festiveDates')
 
 router.get('/', async (req,res) => {
 	try{
+		console.log("entro")
 		const dates = await TimeAssignments.find()
 		
 		res.status(200).json(dates)
@@ -18,6 +19,7 @@ router.get('/', async (req,res) => {
 
 router.post('/', async (req,res) => {
 	try{
+		console.log(req.body)
 		const dates = new TimeAssignments({
 			startSemester: req.body.startSemester,
 			endSemester: req.body.endSemester,
@@ -25,9 +27,9 @@ router.post('/', async (req,res) => {
 			startSecondPartial: req.body.startSecondPartial,
 			startThirdPartial: req.body.startThirdPartial,
 		})
-		
 		SetDates(req.body.startFirstPartial,req.body.startSecondpartial,req.body.startThirdPartial, req.body.endSemester)
 
+		console.log(dates)	
 		const savedDate = await dates.save()
 
 		res.status(200).json(savedDate)
@@ -64,6 +66,17 @@ router.post('/festiveDate', async (req,res) => {
 		const savedFestiveDate = await festiveDate.save()
 
 		res.status(200).json(savedFestiveDate)
+
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
+
+router.get('/festiveDate', async (req,res) => {
+	try{
+
+		const festiveDate = await FestiveDate.find()
+		res.status(200).json(festiveDate)
 
 	}catch(err){
 		res.json({ message : err })

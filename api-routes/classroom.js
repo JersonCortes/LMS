@@ -35,6 +35,19 @@ router.get('/searchSubjects', async (req,res) => {
 	}	
 })
 
+router.get('/searchTeacherSubjects', async (req,res) => {
+	try{
+		const token = req.body.jwt
+		const tokenData = await verifyToken(token)
+		console.log(tokenData)
+		const subjects = await Classroom.find({teacher:tokenData.uid})
+	
+		res.status(200).json(subjects)
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
+
 router.get('/', async (req,res) => {
 	try{
 		

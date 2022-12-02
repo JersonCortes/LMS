@@ -16,7 +16,7 @@ router.get('/postulationForm',(req,res)=>{
 })
 
 
-router.get('/schedule',checkAuth(['student']),(req,res)=>{
+router.get('/schedule',checkAuth(['student','teacher']),(req,res)=>{
 	let url = "http://localhost:3000/api/assignSchedule"
 
 	axios.get(url, {
@@ -47,6 +47,46 @@ router.get('/subjects',(req,res)=>{
 	.then(function (response) {
 		const publication = response.data
 		res.render('subjects',{publication: publication})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
+})
+
+router.get('/subjectsTeacher',(req,res)=>{
+
+	let url = "http://localhost:3000/api/classrooms/searchTeacherSubjects"
+
+	axios.get(url, {
+		data: { jwt:req.cookies.jwt 
+		}
+  	})
+	.then(function (response) {
+		const publication = response.data
+		res.render('subjectTeacher',{publication: publication})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
+})
+
+router.get('/publicationsTeachers',(req,res)=>{
+ 
+	let url = "http://localhost:3000/api/publication"
+	axios.get(url, {
+		data: {
+			publicationId:req.query.publicationId
+		}
+	})
+	.then(function (response) {
+		const publication = response.data
+		res.render('publicationsTeacher',{publication: publication})
   	})
   	.catch(function (error) {
    		console.log(error);
@@ -102,6 +142,10 @@ router.get('/createPublication',(req,res)=>{
 })
 
 
+router.get('/calendar',checkAuth(['student']),(req,res)=>{
+    	
+	res.render('calendar')
+})
 
 //GENERAL ADMIN ROUTES
 
