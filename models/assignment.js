@@ -5,6 +5,10 @@ const AssignmentSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	registerId:{
+		type: String,
+		required: true
+	},
 	date:{
 		type: Date,
 		required: true
@@ -21,6 +25,10 @@ const AssignmentSchema = mongoose.Schema({
 	grade:{
 		type: Number,
 		default:0
+	},
+	graded:{
+		type: Boolean,
+		default:false
 	}
 
 })

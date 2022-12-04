@@ -17,23 +17,18 @@ router.get('/postulationForm',(req,res)=>{
 
 
 router.get('/schedule',checkAuth(['student','teacher']),(req,res)=>{
-	let url = "http://localhost:3000/api/assignSchedule"
 
-	axios.get(url, {
-		data: { jwt:req.cookies.jwt 
-		}
-  	})
-	.then(function (response) {
-		const schedule = response.data
-		console.log(schedule)
-		res.render('schedule',{schedule: schedule})
-  	})
-  	.catch(function (error) {
-   		console.log(error);
-  	})
-  	.finally(function () {
-  	  // always executed
-  	});
+	function getSchedule() {
+	  return axios.get("http://localhost:3000/api/assignSchedule",{data:{ jwt:req.cookies.jwt}});
+	}
+
+	
+	Promise.all([getSchedule()])
+	  .then(function (results) {
+	    const schedule = results[0].data;
+
+	    res.render('schedule',{schedule: schedule})
+	});
 })
 
 router.get('/subjects',(req,res)=>{
@@ -160,18 +155,30 @@ router.get('/checkHomework',checkAuth(['teacher']),(req,res)=>{
 	  .then(function (results) {
 	    const filesAndUsers = results[0].data;
 	    const criteria = results[1].data;
-	    console.log("***********")
-	    console.log(filesAndUsers)
-	    console.log("***********")
-	    console.log(criteria)
+		
+	   console.log("files and users:") 
+	   console.log(filesAndUsers) 
 	    res.render('checkHomework',{filesAndUsers: filesAndUsers, criteria:criteria})
 	});
-
-
-
-
-
 })
+
+router.get('/checkHomeworkTable/:user',checkAuth(['teacher']),(req,res)=>{
+	console.log(req.params.user)
+	function getFiles() {
+	  return axios.get('http://localhost:3000/api/assignment/'+req.params.user);
+	}
+	
+	Promise.all([getFiles()])
+	  .then(function (results) {
+	    const files = results[0].data;
+	    console.log(files)
+	    res.render('include/_checkHomeworkTable',{files: files})
+	});
+})
+
+
+
+
 
 
 //GENERAL ADMIN ROUTES

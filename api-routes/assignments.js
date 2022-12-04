@@ -13,11 +13,12 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 	const token = req.cookies.jwt
 	const tokenData = await verifyToken(token)
 
-	const user = await  UserStudent.findById(tokenData.uid,{career:1})
+	const user = await  UserStudent.findById(tokenData.uid,{career:1,registerNumber:1})
 	console.log(user)
 	//class is equal to the assignmentId
 	const assignment = new Assignment({
-			register:tokenData.uid,
+			registerId:tokenData.uid,
+			register:user.registerNumber,
 			class:req.body.assignment,
 			date: new Date()
 	})
@@ -45,12 +46,46 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 
 router.get('/', async (req,res)=>{
 	try{
+		console.log("test")
 		const homeworks = await Assignment.find({class:req.body.assignment},{"files.data":0})
-		res.json(homeworks)
+		res.status(200).json(homeworks)
 	}catch(err){
 		res.json({ message : err })
 	}
 })
+
+
+
+router.get('/:user', async (req,res)=>{
+	try{
+		console.log(req.params.user)
+		const homeworks = await Assignment.findOne({register:req.params.user},{"files.data":0})
+		res.status(200).json(homeworks)
+	}catch(err){
+		res.json({ message : err })
+	}
+})
+
+router.post('/grade', async (req,res)=>{
+	try{
+		console.log(req.body)
+		if(Array.isArray(req.body.grade)){
+			let grade = 0 
+			for(var i=0; i< req.body.grade.length; i++){
+				grade = parseInt(req.body.grade[i],10) + grade
+			}	
+			
+			const homeworks = await Assignment.findOneAndUpdate({register:req.body.register},{grade:grade, graded:true})
+		}else{
+			
+			const homeworks = await Assignment.findOneAndUpdate({register:req.body.register},{grade:req.body.grade, graded:true})
+		}
+		res.status(200).json(homeworks)
+	}catch(err){
+		res.json({ message : err })
+	}
+})
+
 
 router.get('/files/:homeworkId', async (req,res)=>{
 	try{

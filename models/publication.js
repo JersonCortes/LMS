@@ -33,7 +33,14 @@ const PublicationSchema = mongoose.Schema({
 		contentType: String,
 		criteria: String,
 		weight: String
-	}]
+	}],
+	ytLink:{
+		type:String
+	},
+	ponderation:{
+		type:String
+	}
+
 
 })
 
