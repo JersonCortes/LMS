@@ -5,12 +5,12 @@
         <form action="api/publication" method="POST" enctype="multipart/form-data" class="row g-3" id="assignment">
           <div class="col-md-6">
             <label for="inputTitle" class="form-label">Titulo</label>
-            <input type="text" class="form-control" id="title" name="title">
+            <input type="text" class="form-control" id="title" name="title" required>
           </div>
           
           <div class="col-12">
             <label for="inputDescription" class="form-label">Descripción</label>
-            <textarea class="form-control" aria-label="With textarea" name="content" maxlength="2000"></textarea>
+            <textarea class="form-control" aria-label="With textarea" name="content" maxlength="2000" required></textarea>
           </div>
 
           <div class="col-12">
@@ -19,11 +19,14 @@
             </div>
           </div>
 
+	<input type="hidden" id="idClass" name="class" value="">
+
+
 	<!-- HOMEWORK SECTION-->
           
 	  <div class="col-12">
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck">
+              <input class="form-check-input" type="checkbox" id="gridCheck" name="assignation" value="false">
              	<label class="form-check-label" for="gridCheck">
                 	Tarea
               	</label>
@@ -32,18 +35,32 @@
 
           <div class="col-3">
             <label for="startDate" class="form-label">Fecha de entrega</label>
-            <input id="startDate" class="form-control" type="date" disabled/>
+            <input id="startDate" class="form-control" type="date" name="deliveryDate" disabled/>
           </div>
           
 	  <div class="col-md-4">
             <label for="inputCategory" class="form-label">Categoria</label>
-	    <input class="form-control" list="datalistcategory" id="category" placeholder="agregue una categoria" disabled>
+	    <input class="form-control" list="datalistcategory" id="category" placeholder="agregue una categoria"  disabled>
           </div>
 
           
           <div class="col-12">
-            <button type="button" id="createCriteria" class="btn btn-secondary" onclick="add_tag()" disabled>Agregar etiqueta</button>
+            <button type="button" id="createCriteria" class="btn btn-secondary"  onclick="add_tag()" disabled>Agregar etiqueta</button>
           </div>
+		
+			<div class="row justify-content-start">
+				<div class="col-2">
+	          		  <label for="criteria" class="form-label">Criterio</label>
+	          		  <input type="text" id="criteria0" name="criteria"class="form-control" required="required" disabled/>
+	          		</div>
+	          		<div class="col-md-2">
+	          		  <label for="inputWeight" class="form-label">Ponderacion</label>
+	          		  <input type="number" class="form-control" id="weight0" name="weight" min="1" max="100" required="required" disabled/>
+	          		</div>
+			</div>
+
+
+
 
 	<div class="col-12 ">
  	   <button type="submit" id="createPublication" class="btn btn-primary offset-md-10">Publicar</button>
@@ -52,24 +69,34 @@
         </form>
 	</div>
      </div>
+	<script type="text/javascript">
+		const idClass = document.getElementById("idClass")
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const idClassroom = urlParams.get('classroom')
+		idClass.value=idClassroom
+		console.log(idClassroom)
+	</script>
 
         <script>
 		let counter=0
 		
 		document.getElementById('gridCheck').onclick = function() {
-    			
+    			document.getElementById('gridCheck').value=true	
 			document.getElementById('startDate').disabled = !this.checked;
     			document.getElementById('createCriteria').disabled = !this.checked;
 			document.getElementById('category').disabled = !this.checked;
-			
-			if(counter!=0){
-				console.log(counter)
-				for(let count=1;count<=counter;count++){
-					console.log(count)
+		
+			document.getElementById('startDate').required = !this.required;
+    			document.getElementById('createCriteria').required = !this.required;
+			document.getElementById('category').required = !this.required;
+
+
+
+				for(let count=0;count<=counter;count++){
     					document.getElementById('criteria'+count).disabled = !this.checked;
 					document.getElementById('weight'+count).disabled = !this.checked;
 				}
-			}	
 		};
 
 		function add_tag(){
@@ -80,11 +107,11 @@
 	  		'<div class="row justify-content-start">\
 				<div class="col-2">\
 	          		  <label for="criteria" class="form-label">Criterio</label>\
-	          		  <input type="text" id="criteria'+counter+'" class="form-control" required="required"/>\
+	          		  <input type="text" id="criteria'+counter+'" name="criteria"class="form-control" required="required"/>\
 	          		</div>\
 	          		<div class="col-md-2">\
 	          		  <label for="inputWeight" class="form-label">Ponderacion</label>\
-	          		  <input type="number" class="form-control" id="weight'+counter+'" name="weight" min="1" max="100" required="required">\
+	          		  <input type="number" class="form-control" id="weight'+counter+'" name="weight" min="1" max="100" required="required"/>\
 	          		</div>\
 			</div>'	
 			var form = document.getElementById('createPublication')

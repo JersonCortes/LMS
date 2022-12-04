@@ -16,7 +16,7 @@ router.get('/postulationForm',(req,res)=>{
 })
 
 
-router.get('/schedule',checkAuth(['student']),(req,res)=>{
+router.get('/schedule',checkAuth(['student','teacher']),(req,res)=>{
 	let url = "http://localhost:3000/api/assignSchedule"
 
 	axios.get(url, {
@@ -47,6 +47,46 @@ router.get('/subjects',(req,res)=>{
 	.then(function (response) {
 		const publication = response.data
 		res.render('subjects',{publication: publication})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
+})
+
+router.get('/subjectsTeacher',(req,res)=>{
+
+	let url = "http://localhost:3000/api/classrooms/searchTeacherSubjects"
+
+	axios.get(url, {
+		data: { jwt:req.cookies.jwt 
+		}
+  	})
+	.then(function (response) {
+		const publication = response.data
+		res.render('subjectTeacher',{publication: publication})
+  	})
+  	.catch(function (error) {
+   		console.log(error);
+  	})
+  	.finally(function () {
+  	  // always executed
+  	});
+})
+
+router.get('/publicationsTeachers',(req,res)=>{
+ 
+	let url = "http://localhost:3000/api/publication"
+	axios.get(url, {
+		data: {
+			publicationId:req.query.publicationId
+		}
+	})
+	.then(function (response) {
+		const publication = response.data
+		res.render('publicationsTeacher',{publication: publication})
   	})
   	.catch(function (error) {
    		console.log(error);
@@ -101,6 +141,37 @@ router.get('/createPublication',(req,res)=>{
 		res.render('homeworkCreation')
 })
 
+
+router.get('/calendar',checkAuth(['student']),(req,res)=>{
+    	
+	res.render('calendar')
+})
+
+router.get('/checkHomework',checkAuth(['teacher']),(req,res)=>{
+	function getFilesAndUsers() {
+	  return axios.get('http://localhost:3000/api/assignment/',{data:{ assignment:req.query.publicationId}});
+	}
+	function getCriteria() {
+	  return axios.get('http://localhost:3000/api/publication/one',{data:{ publicationId:req.query.publicationId}});
+		
+	}
+	
+	Promise.all([getFilesAndUsers(), getCriteria()])
+	  .then(function (results) {
+	    const filesAndUsers = results[0].data;
+	    const criteria = results[1].data;
+	    console.log("***********")
+	    console.log(filesAndUsers)
+	    console.log("***********")
+	    console.log(criteria)
+	    res.render('checkHomework',{filesAndUsers: filesAndUsers, criteria:criteria})
+	});
+
+
+
+
+
+})
 
 
 //GENERAL ADMIN ROUTES
@@ -206,7 +277,6 @@ router.get('/assignTeacher',checkAuth(['adminC']),(req,res)=>{
 	});
 
 })
-
 router.get('/createSubject',checkAuth(['adminC']),(req,res)=>{
     	
 	res.render('createSubject')
