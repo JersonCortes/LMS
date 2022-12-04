@@ -16,10 +16,10 @@
 
     <body>
         <main class="d-flex flex-nowrap"> 
-			<%- include('include/_navBar')%>
+			<%- include('include/_navBarTeacher')%>
                 <div class="container" >
                 	
-			<%- include('include/_publication')%>
+			<%- include('include/_publicationTeacher')%>
 
 		</div>
 
@@ -28,8 +28,11 @@
 		</div>
             </div>
 	<script type="text/javascript">
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const idClassroom = urlParams.get('publicationId')
 		document.getElementById("makePublication").onclick = function () {
-       	 		location.href = "/createPublication";
+       	 		location.href = "/createPublication?classroom="+idClassroom;
        	 	};
         </script>
             <script src="js/bootstrap.bundle.min.js"></script>  

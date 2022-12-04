@@ -147,6 +147,33 @@ router.get('/calendar',checkAuth(['student']),(req,res)=>{
 	res.render('calendar')
 })
 
+router.get('/checkHomework',checkAuth(['teacher']),(req,res)=>{
+	function getFilesAndUsers() {
+	  return axios.get('http://localhost:3000/api/assignment/',{data:{ assignment:req.query.publicationId}});
+	}
+	function getCriteria() {
+	  return axios.get('http://localhost:3000/api/publication/one',{data:{ publicationId:req.query.publicationId}});
+		
+	}
+	
+	Promise.all([getFilesAndUsers(), getCriteria()])
+	  .then(function (results) {
+	    const filesAndUsers = results[0].data;
+	    const criteria = results[1].data;
+	    console.log("***********")
+	    console.log(filesAndUsers)
+	    console.log("***********")
+	    console.log(criteria)
+	    res.render('checkHomework',{filesAndUsers: filesAndUsers, criteria:criteria})
+	});
+
+
+
+
+
+})
+
+
 //GENERAL ADMIN ROUTES
 
 router.get('/postulates',checkAuth(['admin']),(req,res)=>{
@@ -250,7 +277,6 @@ router.get('/assignTeacher',checkAuth(['adminC']),(req,res)=>{
 	});
 
 })
-
 router.get('/createSubject',checkAuth(['adminC']),(req,res)=>{
     	
 	res.render('createSubject')

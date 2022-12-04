@@ -28,6 +28,11 @@ const PublicationSchema = mongoose.Schema({
 		contentType: String, 
 		data: Buffer,
 		name: String
+	}],
+	criteria:[{
+		contentType: String,
+		criteria: String,
+		weight: String
 	}]
 
 })

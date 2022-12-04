@@ -19,7 +19,8 @@ const AssignmentSchema = mongoose.Schema({
 		name: String
 	}],
 	grade:{
-		type: Number
+		type: Number,
+		default:0
 	}
 
 })

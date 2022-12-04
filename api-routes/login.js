@@ -30,7 +30,7 @@ router.post('/', async (req,res) => {
 						res.redirect('/schedule')	
 					break
 					case "teacher":
-						res.redirect('/subjects')
+						res.redirect('/subjectsTeacher')
 					break
 					case "admin":
 						res.redirect('/postulates')	

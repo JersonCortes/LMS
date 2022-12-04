@@ -14,7 +14,7 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 			content:req.body.content,
 			class:req.body.class,
 			assignation:req.body.assignation,
-			date:req.body.date	
+			deliveryDate:req.body.deliveryDate	
 	})
 
 	if(req.files){
@@ -22,10 +22,26 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 			publication.files[index] = {
 				data:fs.readFileSync(req.files[index].path),
 				contentType:req.files[index].mimetype,
+				name:req.files[index].originalname
 			}
 		})
 	}
+	if(req.body.criteria){
+		if(!Array.isArray(req.body.criteria)){
+			publication.criteria[0] = {
+				criteria:req.body.criteria,
+				weight:req.body.weight
+			}
 
+		}else{	
+			req.body.criteria.forEach(function(files,index){
+				publication.criteria[index] = {
+					criteria:req.body.criteria[index],
+					weight:req.body.weight[index]
+				}
+			})
+		}
+	}	
 	try{
 		await publication.save()
 
@@ -43,7 +59,7 @@ router.get('/', async (req,res) => {
 	
 	try{
 		const publication = await Publication.find({class:req.body.publicationId},{files:0,content:0})
-
+		
 		res.status(200).json(publication)
 
 	}catch(err){
@@ -59,7 +75,6 @@ router.get('/one', async (req,res) => {
 	
 	try{
 		const onePublication = await Publication.findById(req.body.publicationId,{ "files.data":0 })
-		console.log(onePublication)
 		res.status(200).json(onePublication)
 
 	}catch(err){
@@ -77,7 +92,7 @@ router.get('/files/:publicationId', async (req,res)=>{
 
 			if(onePublication.files[index]._id==req.params.publicationId){
 				res.setHeader("Content-Type",onePublication.files[index].contentType)	
-				res.setHeader("Content-Disposition","inline; filename=file.pdf")
+				res.setHeader("Content-Disposition","inline; filename="+onePublication.files[index].name)
 				res.send(onePublication.files[index].data)
 			}
 
