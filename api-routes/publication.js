@@ -52,7 +52,8 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 	try{
 		await publication.save()
 
-		res.status(200).json(publication)
+		
+		res.status(200).redirect('/publicationsTeachers?publicationId='+req.body.class)
 
 	}catch(err){
 		

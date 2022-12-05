@@ -4,6 +4,7 @@ const router = express.Router()
 const Classroom = require('../models/classroom')
 const userStudent = require('../models/userStudent')
 const verifyToken = require('../services/verifyToken')
+const classroomStudent = require('../models/classroomStudent')
 
 router.post('/', async (req,res) => {
 	try{
@@ -11,9 +12,28 @@ router.post('/', async (req,res) => {
 			subject:req.body.subject,
 			group:req.body.group,
 			teacher:req.body.teacher
-		})	
-
+		})
+		
 		await classroom.save()
+
+
+		const users = await userStudent.find({group:req.body.group},{})
+
+
+		users.forEach(async (element)=>{
+
+			var ClassroomStudent = new classroomStudent({
+				group:req.body.group,
+				classroom:classroom._id,
+				student:element._id,
+			})
+
+			await ClassroomStudent.save()
+		})
+		
+
+
+
 
 		res.status(200).redirect('/assignTeacher')
 	}catch(err){

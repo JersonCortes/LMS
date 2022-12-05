@@ -24,6 +24,10 @@ const UserStudentSchema = mongoose.Schema({
 	},
 	career:{
 		type: String,
+	},
+	droped:{
+		type: Boolean,
+		default:false
 	}
 })
 
