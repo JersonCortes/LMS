@@ -3,11 +3,23 @@
       <div class="card-body">
     
         <form action="api/publication" method="POST" enctype="multipart/form-data" class="row g-3" id="assignment">
-          <div class="col-md-6">
-            <label for="inputTitle" class="form-label">Titulo</label>
-            <input type="text" class="form-control" id="title" name="title" required>
-          </div>
+        	<div class="row">
+	  		<div class="col-md-6 ">
+          		  <label for="inputTitle" class="form-label">Titulo</label>
+          		  <input type="text" class="form-control" id="title" name="title" required>
+          		</div>
           
+          	
+			
+			<div class="col-3 ">
+          			<label for="inputTitle" class="form-label">Ponderacion customizada</label>
+				<div class="input-group mb-3 col">
+				  <input type="number" class="form-control col-xs-2" id="ponderation" name="ponderation"disabled>
+				</div>
+			</div>
+
+		</div>
+
           <div class="col-12">
             <label for="inputDescription" class="form-label">Descripción</label>
             <textarea class="form-control" aria-label="With textarea" name="content" maxlength="2000" required></textarea>
@@ -15,13 +27,20 @@
 
           <div class="col-12">
             <div class="input-group mb-3">
-              <input type="file" class="form-control" id="inputGroupFile01" name="files">
+              <input type="file" class="form-control" id="inputGroupFile01" name="files" multiple>
             </div>
           </div>
 
+	 <div class="col-12">
+            <label for="inputYt" class="form-label">Link de youtube</label>
+            <input type="text" class="form-control"  name="ytLink" maxlength="100" >
+          </div>
+
+
+
 	<input type="hidden" id="idClass" name="class" value="">
 
-
+	
 	<!-- HOMEWORK SECTION-->
           
 	  <div class="col-12">
@@ -91,6 +110,7 @@
     			document.getElementById('createCriteria').required = !this.required;
 			document.getElementById('category').required = !this.required;
 
+			document.getElementById('ponderation').disabled = !this.checked;
 
 
 				for(let count=0;count<=counter;count++){
@@ -118,6 +138,9 @@
 			form.insertAdjacentHTML("beforebegin", html)
 
 		}
+
+
+
 
 	</script>
   </div>

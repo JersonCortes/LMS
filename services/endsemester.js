@@ -20,8 +20,4 @@ const setDates = (startFirstPartial,startSecondPartial, startThirdPartial, EndSe
 	})
 }
 
-const createClasses = {
-
-}
-//  "$gte" "$lt"
 module.exports = setDates

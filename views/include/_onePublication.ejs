@@ -55,18 +55,24 @@
 
 
 			
+					<%if(publication.assignation){%>
 			<div class="col">
         		<form action="api/assignment" method="POST" enctype="multipart/form-data" class="row g-3" id="assignment">
 		        	<div class="col-12">
 		        		<div class="input-group mb-3">
-		        			<input type="file" class="form-control" id="inputGroupFile01" name="files">
+		        			<input type="file" class="form-control" id="inputGroupFile01" name="files" multiple>
 		        		</div>
 		        	</div>
 	          	</div>
         	
+					<%}%>
 
-
-	
+					<%if(publication.ytLink){%>
+							<div class="embed-responsive embed-responsive-21by9">
+ 								<iframe width="560" height="315" class="embed-responsive-item" src="<%=publication.ytLink%>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+								</iframe>
+							</div>
+					<%}%>
 			
 					<input type="hidden" id="idAssignment" name="assignment" value="<%= publication._id%>">
 

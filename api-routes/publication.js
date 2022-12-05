@@ -26,6 +26,13 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 			}
 		})
 	}
+	if(req.body.ponderation){
+			publication.ponderation = req.body.ponderation	
+	}
+	if(req.body.ytLink){
+			publication.ytLink = req.body.ytLink	
+	}
+
 	if(req.body.criteria){
 		if(!Array.isArray(req.body.criteria)){
 			publication.criteria[0] = {
