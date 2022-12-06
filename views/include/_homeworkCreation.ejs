@@ -57,9 +57,20 @@
             <input id="startDate" class="form-control" type="date" name="deliveryDate" disabled/>
           </div>
           
-	  <div class="col-md-4">
-            <label for="inputCategory" class="form-label">Categoria</label>
-	    <input class="form-control" list="datalistcategory" id="category" placeholder="agregue una categoria"  disabled>
+  <div class="col-md-4">
+            <label for="inputCategory" class="form-label">Categoria</label>	
+	    				<select class="form-select"  id="category" placeholder="agregue una categoria" name="category" disabled>
+						
+						<option value="" hidden>Seleccione un usuario</option>
+
+						<% if(categories){ %>	
+							<% for(var i=0; i< categories.name.length; i++){ %>	
+								<option value="<%= categories.name[i]%>" > <%= categories.name[i]%></option>
+								
+							<% } %>
+						<% } %>
+					</select>
+
           </div>
 
           
@@ -86,14 +97,41 @@
          </div>
 
         </form>
+
+		
+	<form action="api/ponderation" method="POST" class="row g-3" >
+       		   <div class="row">
+       		   	<div class="col-3">
+       		   	  <label for="startDate" class="form-label">Nombre de nueva categoria</label>
+       		   	  <input type="text" class="form-control" list="datalistcategory" placeholder="agregue una categoria" name="categoryCreateName">
+       		   	</div>
+       		   			
+
+  		   	<div class="col-md-4">
+       		   	  <label for="inputCategory" class="form-label">Categoria</label>
+       		   	  <input type="number"class="form-control" list="datalistcategory" name="categoryPonderation" >
+       		   	</div>
+
+
+			<input type="hidden" id="idClassroom" name="id" value="">
+       		   </div>
+			<div class="col-12 ">
+		 	   <button type="submit" id="createPublication" class="btn btn-primary offset-md-10">Crear Categoria</button>
+		         </div>
+        </form>
+
+	
 	</div>
      </div>
 	<script type="text/javascript">
 		const idClass = document.getElementById("idClass")
+		const id = document.getElementById("idClassroom")
 		const queryString = window.location.search;
 		const urlParams = new URLSearchParams(queryString);
 		const idClassroom = urlParams.get('classroom')
 		idClass.value=idClassroom
+		id.value=idClassroom
+
 		console.log(idClassroom)
 	</script>
 

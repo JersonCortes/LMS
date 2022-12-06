@@ -88,5 +88,17 @@ const registerCount = require('./api-routes/addRegister')
 app.use('/api/registerCount', registerCount)
 
 
+const dropped = require('./api-routes/dropped')
+
+app.use('/api/drop', dropped)
+
+
+const ponderation = require('./api-routes/classroomPonderation')
+
+app.use('/api/ponderation', ponderation)
+
+
+
+
 
 app.listen(3000)

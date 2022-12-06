@@ -4,7 +4,6 @@ const router = express.Router()
 const UserStudent = require('../models/userStudent')
 const Group = require('../models/groups')
 
-
 router.get('/', async (req,res) => {
 	try{
 		const user = await UserStudent.find({'role':'student'},{'password':0, 'firstTimeLogged':0, 'role':0, 'username':0})
