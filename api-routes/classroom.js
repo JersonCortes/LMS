@@ -123,10 +123,10 @@ router.get('/test/testing', async (req,res) => {
 			var partialGrade = 0
 			
 			//Pasamos por cada publicacion
-			publications.forEach( (publication)=>{
+			publications.forEach(async (publication)=>{
 				//la tarea de la publicacion
-				const assignment = Assignment.findOne({class:publication._id, registerId:classroom.student},{grade:1})
-			
+				const assignment = await Assignment.findOne({class:publication._id, registerId:classroom.student},{grade:1})
+				console.log
 				if(assignment!=null){
 					tareas.push(new Tarea(publication.category,assignment.grade,classroom.student,publication.ponderation,(publication.ponderation!=null ? true:false)))
 				}	
