@@ -64,8 +64,8 @@
 						<option value="" hidden>Seleccione un usuario</option>
 
 						<% if(categories){ %>	
-							<% for(var i=0; i< categories.name.length; i++){ %>	
-								<option value="<%= categories.name[i]%>" > <%= categories.name[i]%></option>
+							<% for(var i=0; i< categories.ponderations.length; i++){ %>	
+								<option value="<%= categories.ponderations[i].name%>" ><%= categories.ponderations[i].name%></option>
 								
 							<% } %>
 						<% } %>

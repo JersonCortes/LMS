@@ -144,7 +144,7 @@ router.get('/createPublication',(req,res)=>{
 	  .then(function (results) {
 	    const categories = results[0].data;
 		
-	    console.log(categories.name[0]) 
+	    
 	    res.render('homeworkCreation',{categories: categories})
 	});
 
