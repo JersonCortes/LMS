@@ -8,8 +8,13 @@ router.post('/', async (req,res) => {
 		console.log("entro")
 		await Ponderation.findOneAndUpdate({classroomId:req.body.id},{
 			$push:{
-			name: req.body.categoryCreateName,
-			ponderation: req.body.categoryPonderation
+
+				ponderations:{
+					name: req.body.categoryCreateName,
+					ponderation: req.body.categoryPonderation
+
+
+				}
 			}
 		})
 	

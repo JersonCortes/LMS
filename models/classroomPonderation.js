@@ -4,12 +4,11 @@ const ClassroomPonderation = mongoose.Schema({
 	classroomId:{
 		type:String
 	},
-	name:[{
-		type:String
-	}],
-	ponderation:[{
-		type:String
+	ponderations:[{
+		name:String,
+		ponderation:String
 	}]
+
 })
 
 module.exports = mongoose.model('ClassroomPonderation', ClassroomPonderation)

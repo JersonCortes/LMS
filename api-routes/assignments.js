@@ -77,10 +77,11 @@ router.post('/grade', async (req,res)=>{
 				grade = parseInt(req.body.grade[i],10) + grade
 			}	
 			
-			const homeworks = await Assignment.findOneAndUpdate({register:req.body.register},{grade:grade, graded:true})
+			const homeworks = await Assignment.findOneAndUpdate({register:req.body.register, class: req.body.assignment},{grade:grade, graded:true})
 		}else{
-			
-			const homeworks = await Assignment.findOneAndUpdate({register:req.body.register},{grade:req.body.grade, graded:true})
+			console.log("aqui entro")	
+			const homeworks = await Assignment.findOneAndUpdate({register:req.body.register, class:req.body.assignment },{grade:req.body.grade, graded:true})
+			console.log(homeworks)
 		}
 		res.status(200).json(homeworks)
 	}catch(err){
