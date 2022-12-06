@@ -26,6 +26,9 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 			}
 		})
 	}
+	if(req.body.category){
+		publication.category = req.body.category
+	}
 	if(req.body.ponderation){
 			publication.ponderation = req.body.ponderation	
 	}
@@ -53,7 +56,7 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 		await publication.save()
 
 		
-		res.status(200).redirect('/publicationsTeachers?publicationId='+req.body.class)
+		res.status(200).json(publication)
 
 	}catch(err){
 		

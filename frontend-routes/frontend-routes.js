@@ -133,7 +133,21 @@ router.get('/publicationsOne',(req,res)=>{
 
 router.get('/createPublication',(req,res)=>{
 
-		res.render('homeworkCreation')
+
+//cambiar esto por id de salon
+	function getCriteria() {
+	  return axios.get('http://localhost:3000/api/ponderation/',{data:{ classroomId:req.query.classroom}});
+	}
+
+	
+	Promise.all([getCriteria()])
+	  .then(function (results) {
+	    const categories = results[0].data;
+		
+	    console.log(categories.name[0]) 
+	    res.render('homeworkCreation',{categories: categories})
+	});
+
 })
 
 
@@ -220,6 +234,19 @@ router.get('/assignGroups',checkAuth(['admin']),(req,res)=>{
 	    const students = results[0].data;
 	    const groups = results[1].data;
 	    res.render('studentGroupAssignation',{students: students, groups:groups})
+	});
+
+})
+
+router.get('/drop',checkAuth(['admin']),(req,res)=>{
+	function getUsers() {
+	  return axios.get('http://localhost:3000/api/drop');
+	}
+	
+	Promise.all([getUsers()])
+	  .then(function (results) {
+	    const students = results[0].data;
+	    res.render('dropped',{students: students})
 	});
 
 })

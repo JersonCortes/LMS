@@ -39,6 +39,9 @@ const PublicationSchema = mongoose.Schema({
 	},
 	ponderation:{
 		type:String
+	},
+	category:{
+		type: String
 	}
 
 
