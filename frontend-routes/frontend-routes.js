@@ -113,22 +113,24 @@ router.get('/publications',(req,res)=>{
 
 router.get('/publicationsOne',(req,res)=>{
  
-	let url = "http://localhost:3000/api/publication/one"
-	axios.get(url, {
-		data: {
-			publicationId:req.query.publicationId
-		}
-	})
-	.then(function (response) {
-		const publication = response.data
-		res.render('onePublication',{publication: publication})
-  	})
-  	.catch(function (error) {
-   		console.log(error);
-  	})
-  	.finally(function () {
-  	  // always executed
-  	});
+	function getCriteria() {
+	  return axios.get('http://localhost:3000/api/publication/one',{data:{ publicationId:req.query.publicationId}});
+	}
+
+	function getHomework() {
+	  return axios.get('http://localhost:3000/api/assignment/getHomework',{data:{ publicationId:req.query.publicationId, jwt:req.cookies.jwt}});
+	}
+
+
+	Promise.all([getCriteria(),getHomework()])
+	  .then(function (results) {
+	    const publication = results[0].data;
+	    const homework = results[1].data	
+	    
+		res.render('onePublication',{publication: publication, homework:homework})
+	});
+
+
 })
 
 router.get('/createPublication',(req,res)=>{
@@ -176,10 +178,9 @@ router.get('/checkHomework',checkAuth(['teacher']),(req,res)=>{
 	});
 })
 
-router.get('/checkHomeworkTable/:user',checkAuth(['teacher']),(req,res)=>{
-	console.log(req.params.user)
+router.get('/checkHomeworkTable/:user/:publicationId',checkAuth(['teacher']),(req,res)=>{
 	function getFiles() {
-	  return axios.get('http://localhost:3000/api/assignment/'+req.params.user);
+	  return axios.get('http://localhost:3000/api/assignment/'+req.params.user+'/'+req.params.publicationId);
 	}
 	
 	Promise.all([getFiles()])

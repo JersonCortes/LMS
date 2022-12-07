@@ -280,7 +280,7 @@
 			    }
 			
 			    if(currentWrapper) {
-			      currentWrapper.className = 'events out';
+		      currentWrapper.className = 'events out';
 			      currentWrapper.addEventListener('webkitAnimationEnd', function() {
 			        currentWrapper.parentNode.removeChild(currentWrapper);
 			        ele.appendChild(wrapper);
@@ -352,7 +352,7 @@
 		      		 		test.onload = () => {
 		      		 			festiveDates = JSON.parse(test.responseText);
 		      		 			festiveDates.forEach(function (festiveDates,index){
-							data.push({eventName:festiveDates.event,calendar:'other',color:'green',date:moment(festiveDates.date)})
+							data.push({eventName:festiveDates.event,calendar:'other',color:'green',date:moment(festiveDates.date).add(1,'d')})
 							resolve(festiveDates)
 						   })
 						}
@@ -368,9 +368,9 @@
 		      	 			const xhr = new XMLHttpRequest();
 		      	 			xhr.onload = () => {
 		      	 			  	partialDates = JSON.parse(xhr.responseText);
-							data.push({ eventName: 'Inicio de primer parcial', calendar: 'Other', color: 'green', date:moment(partialDates[0].startFirstPartial)});
-		      	 				data.push({ eventName: 'Inicio de segundo parcial', calendar: 'Other', color: 'green', date:moment(partialDates[0].startSecondPartial)});
-		      	 				data.push({ eventName: 'Inicio de tercer parcial', calendar: 'Other', color: 'green', date:moment(partialDates[0].startThirdPartial)});
+							data.push({ eventName: 'Inicio de primer parcial', calendar: 'Other', color: 'green', date:moment(partialDates[0].startFirstPartial).add(1,'d')});
+		      	 				data.push({ eventName: 'Inicio de segundo parcial', calendar: 'Other', color: 'green', date:moment(partialDates[0].startSecondPartial).add(1,'d')});
+		      	 				data.push({ eventName: 'Inicio de tercer parcial', calendar: 'Other', color: 'green', date:moment(partialDates[0].startThirdPartial).add(1,'d')});
 							resolve(partialDates)
 		      	 			}
 		      	 			xhr.open("GET", "/api/timeAssignment/");
