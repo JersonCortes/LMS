@@ -38,8 +38,9 @@
 
         		 	</div>
 
-			
+					<%if(!filesAndUsers){%>	
 					<input type="hidden" id="idAssignment" name="assignment" value="<%= filesAndUsers[0].class %>">
+					<%}%>
 			</form>
 				<div class="col" id="tableHW">	
 
@@ -55,7 +56,8 @@
 </div>
    <script>
 		let userSelector = document.getElementById("userSelector");
-
+		const params = new URLSearchParams(window.location.search)
+		const publicationId = params.get('publicationId')
 		function test(){
 			const xhr = new XMLHttpRequest();
 			xhr.onload = () => {
@@ -63,7 +65,7 @@
 			  document.getElementById("tableHW").innerHTML = xhr.responseText;
 			  console.log(xhr.responseText)
 			}
-			xhr.open("GET", "/checkHomeworkTable/"+userSelector.value);
+			xhr.open("GET", "/checkHomeworkTable/"+userSelector.value+"/"+publicationId);
 			xhr.responseType = "text";
 			xhr.send();
 		}		

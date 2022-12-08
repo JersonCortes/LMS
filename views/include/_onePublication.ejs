@@ -51,20 +51,41 @@
 					<%}%>
 
         	 		</div>
-
-
-
-			
+						
+					<%if(homework){%>
+						<%if(homework.graded){%>
+							<div class="col">
+								<div class="card">
+  									<div class="card-body">
+   										 Calificacion: <%= homework.grade%>
+									  </div>
+								</div>	  
+							</div>
+						
+						<%}else{%>
+							<div class="col">
+								<div class="card">
+  									<div class="card-body">
+   										Su tarea aun no ha sido calificada 
+									  </div>
+								</div>	  
+							</div>
+					
+						<%}%>
+					<%}%>
 					<%if(publication.assignation){%>
-			<div class="col">
-        		<form action="api/assignment" method="POST" enctype="multipart/form-data" class="row g-3" id="assignment">
-		        	<div class="col-12">
-		        		<div class="input-group mb-3">
-		        			<input type="file" class="form-control" id="inputGroupFile01" name="files" multiple>
-		        		</div>
-		        	</div>
-	          	</div>
+
+						<%if(!homework){%>
+						<div class="col">
+        					<form action="api/assignment" method="POST" enctype="multipart/form-data" class="row g-3" id="assignment">
+		        				<div class="col-12">
+		        					<div class="input-group mb-3">
+		        						<input type="file" class="form-control" id="inputGroupFile01" name="files" multiple>
+		        					</div>
+		        				</div>
+	          				</div>
         	
+						<%}%>
 					<%}%>
 
 					<%if(publication.ytLink){%>
@@ -76,9 +97,14 @@
 			
 					<input type="hidden" id="idAssignment" name="assignment" value="<%= publication._id%>">
 
+					<%if(publication.assignation){%>
+
+						<%if(!homework.graded){%>
 					<div class="col-12 ">
  	   						<button type="submit" id="createPublication" class="btn btn-primary offset-md-11">Entregar</button>
         				</div>
+					<%}%>
+					<%}%>
 			</form>
 			</div>
         	</div>

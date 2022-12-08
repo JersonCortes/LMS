@@ -2,7 +2,18 @@ const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 const checkAuth = require('../services/auth')
+const { v4: uuidV4 } = require('uuid')
 
+//videocall
+router.get('/', (req, res) => {
+	console.log("entro")
+	res.redirect(`/${uuidV4()}`)
+})
+
+router.get('/:room', (req, res) => {
+	res.render('videocall', { roomId: req.params.room })
+})
+//videocall ends
 router.get('/login',(req,res)=>{
     	res.render('login')
 })
@@ -19,7 +30,7 @@ router.get('/postulationForm',(req,res)=>{
 router.get('/schedule',checkAuth(['student','teacher']),(req,res)=>{
 
 	function getSchedule() {
-	  return axios.get("http://localhost:3000/api/assignSchedule",{data:{ jwt:req.cookies.jwt}});
+	  return axios.get("https://localhost:3000/api/assignSchedule",{data:{ jwt:req.cookies.jwt}});
 	}
 
 	
@@ -33,7 +44,7 @@ router.get('/schedule',checkAuth(['student','teacher']),(req,res)=>{
 
 router.get('/subjects',(req,res)=>{
  
-	let url = "http://localhost:3000/api/classrooms/searchSubjects"
+	let url = "https://localhost:3000/api/classrooms/searchSubjects"
 
 	axios.get(url, {
 		data: { jwt:req.cookies.jwt 
@@ -53,7 +64,7 @@ router.get('/subjects',(req,res)=>{
 
 router.get('/subjectsTeacher',(req,res)=>{
 
-	let url = "http://localhost:3000/api/classrooms/searchTeacherSubjects"
+	let url = "https://localhost:3000/api/classrooms/searchTeacherSubjects"
 
 	axios.get(url, {
 		data: { jwt:req.cookies.jwt 
@@ -73,7 +84,7 @@ router.get('/subjectsTeacher',(req,res)=>{
 
 router.get('/publicationsTeachers',(req,res)=>{
  
-	let url = "http://localhost:3000/api/publication"
+	let url = "https://localhost:3000/api/publication"
 	axios.get(url, {
 		data: {
 			publicationId:req.query.publicationId
@@ -93,7 +104,7 @@ router.get('/publicationsTeachers',(req,res)=>{
 
 router.get('/publications',(req,res)=>{
  
-	let url = "http://localhost:3000/api/publication"
+	let url = "https://localhost:3000/api/publication"
 	axios.get(url, {
 		data: {
 			publicationId:req.query.publicationId
@@ -113,30 +124,60 @@ router.get('/publications',(req,res)=>{
 
 router.get('/publicationsOne',(req,res)=>{
  
-	let url = "http://localhost:3000/api/publication/one"
-	axios.get(url, {
-		data: {
-			publicationId:req.query.publicationId
-		}
-	})
-	.then(function (response) {
-		const publication = response.data
-		res.render('onePublication',{publication: publication})
-  	})
-  	.catch(function (error) {
-   		console.log(error);
-  	})
-  	.finally(function () {
-  	  // always executed
-  	});
+	function getCriteria() {
+	  return axios.get('https://localhost:3000/api/publication/one',{data:{ publicationId:req.query.publicationId}});
+	}
+
+	function getHomework() {
+	  return axios.get('https://localhost:3000/api/assignment/getHomework',{data:{ publicationId:req.query.publicationId, jwt:req.cookies.jwt}});
+	}
+
+
+	Promise.all([getCriteria(),getHomework()])
+	  .then(function (results) {
+	    const publication = results[0].data;
+	    const homework = results[1].data	
+	    
+		res.render('onePublication',{publication: publication, homework:homework})
+	});
+
+
 })
+
+router.get('/template',(req,res)=>{
+
+	    res.render('template',)
+
+})
+
+
+router.get('/templateModify',(req,res)=>{
+	console.log(req.query)
+	function getPublications() {
+	  return axios.get('https://localhost:3000/api/template',{data:{ templateCode:req.query.templateCode,currentClassroom:req.query.currentClassroom}});
+	}
+
+
+	Promise.all([getPublications()])
+	  .then(function (results) {
+	    const publications = results[0].data;
+
+	    
+		res.render('templateModify',{publications: publications})
+	});
+
+})
+
+
+
+
 
 router.get('/createPublication',(req,res)=>{
 
 
 //cambiar esto por id de salon
 	function getCriteria() {
-	  return axios.get('http://localhost:3000/api/ponderation/',{data:{ classroomId:req.query.classroom}});
+	  return axios.get('https://localhost:3000/api/ponderation/',{data:{ classroomId:req.query.classroom}});
 	}
 
 	
@@ -158,10 +199,10 @@ router.get('/calendar',checkAuth(['student']),(req,res)=>{
 
 router.get('/checkHomework',checkAuth(['teacher']),(req,res)=>{
 	function getFilesAndUsers() {
-	  return axios.get('http://localhost:3000/api/assignment/',{data:{ assignment:req.query.publicationId}});
+	  return axios.get('https://localhost:3000/api/assignment/',{data:{ assignment:req.query.publicationId}});
 	}
 	function getCriteria() {
-	  return axios.get('http://localhost:3000/api/publication/one',{data:{ publicationId:req.query.publicationId}});
+	  return axios.get('https://localhost:3000/api/publication/one',{data:{ publicationId:req.query.publicationId}});
 		
 	}
 	
@@ -176,10 +217,9 @@ router.get('/checkHomework',checkAuth(['teacher']),(req,res)=>{
 	});
 })
 
-router.get('/checkHomeworkTable/:user',checkAuth(['teacher']),(req,res)=>{
-	console.log(req.params.user)
+router.get('/checkHomeworkTable/:user/:publicationId',checkAuth(['teacher']),(req,res)=>{
 	function getFiles() {
-	  return axios.get('http://localhost:3000/api/assignment/'+req.params.user);
+	  return axios.get('https://localhost:3000/api/assignment/'+req.params.user+'/'+req.params.publicationId);
 	}
 	
 	Promise.all([getFiles()])
@@ -200,7 +240,7 @@ router.get('/checkHomeworkTable/:user',checkAuth(['teacher']),(req,res)=>{
 router.get('/postulates',checkAuth(['admin']),(req,res)=>{
 
 
-	let url = "http://localhost:3000/api/postulate"
+	let url = "https://localhost:3000/api/postulate"
 	
 	axios.get(url, {
     		params: {
@@ -220,14 +260,14 @@ router.get('/postulates',checkAuth(['admin']),(req,res)=>{
 
 router.get('/assignGroups',checkAuth(['admin']),(req,res)=>{
 	function getUsers() {
-	  return axios.get('http://localhost:3000/api/groups');
+	  return axios.get('https://localhost:3000/api/groups');
 	}
 	
 	function getAllGroups() {
-	  return axios.get('http://localhost:3000/api/groups/all');
+	  return axios.get('https://localhost:3000/api/groups/all');
 	}
 	function getAllClassrooms() {
-	  return axios.get('http://localhost:3000/api/classrooms');
+	  return axios.get('https://localhost:3000/api/classrooms');
 	}
 	Promise.all([getUsers(), getAllGroups(),])
 	  .then(function (results) {
@@ -240,7 +280,7 @@ router.get('/assignGroups',checkAuth(['admin']),(req,res)=>{
 
 router.get('/drop',checkAuth(['admin']),(req,res)=>{
 	function getUsers() {
-	  return axios.get('http://localhost:3000/api/drop');
+	  return axios.get('https://localhost:3000/api/drop');
 	}
 	
 	Promise.all([getUsers()])
@@ -260,7 +300,7 @@ router.get('/assignDate',(req,res)=>{
 router.get('/assignSchedule',checkAuth(['adminC']), (req,res)=>{
 	
 	function getAllGroups() {
-	  return axios.get('http://localhost:3000/api/groups/all');
+	  return axios.get('https://localhost:3000/api/groups/all');
 	}
 	
 	Promise.all([getAllGroups()])
@@ -275,10 +315,10 @@ router.get('/assignSchedule',checkAuth(['adminC']), (req,res)=>{
 
 router.get('/assignScheduleTable/:group',checkAuth(['adminC']),(req,res)=>{
 	function getGroupClassrooms() {
-	  return axios.get('http://localhost:3000/api/classrooms/'+req.params.group);
+	  return axios.get('https://localhost:3000/api/classrooms/'+req.params.group);
 	}
 	function getAllSubjects() {
-	  return axios.get('http://localhost:3000/api/subjects');
+	  return axios.get('https://localhost:3000/api/subjects');
 	}
 	Promise.all([getGroupClassrooms(),getAllSubjects()])
 	  .then(function (results) {
@@ -293,13 +333,13 @@ router.get('/assignScheduleTable/:group',checkAuth(['adminC']),(req,res)=>{
 
 router.get('/assignTeacher',checkAuth(['adminC']),(req,res)=>{
 	function getUsers() {
-	  return axios.get('http://localhost:3000/api/teachers',{data:{jwt:req.cookies.jwt}});
+	  return axios.get('https://localhost:3000/api/teachers',{data:{jwt:req.cookies.jwt}});
 	}
 	function getAllGroups() {
-	  return axios.get('http://localhost:3000/api/groups/all');
+	  return axios.get('https://localhost:3000/api/groups/all');
 	}	
 	function getSubjects() {
-	  return axios.get('http://localhost:3000/api/subjects',{data:{jwt:req.cookies.jwt}});
+	  return axios.get('https://localhost:3000/api/subjects',{data:{jwt:req.cookies.jwt}});
 	}
 	
 	Promise.all([getUsers(), getAllGroups(), getSubjects()])

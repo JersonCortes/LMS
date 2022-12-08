@@ -48,7 +48,8 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 
 router.get('/', async (req,res)=>{
 	try{
-		console.log("test")
+		console.log(req.body.assignment)
+		
 		const homeworks = await Assignment.find({class:req.body.assignment},{"files.data":0})
 		res.status(200).json(homeworks)
 	}catch(err){
@@ -58,15 +59,32 @@ router.get('/', async (req,res)=>{
 
 
 
-router.get('/:user', async (req,res)=>{
+router.get('/:user/:publicationId', async (req,res)=>{
 	try{
-		console.log(req.params.user)
-		const homeworks = await Assignment.findOne({register:req.params.user},{"files.data":0})
+		const homeworks = await Assignment.findOne({register:req.params.user, class:req.params.publicationId},{"files.data":0})
 		res.status(200).json(homeworks)
 	}catch(err){
 		res.json({ message : err })
 	}
 })
+
+router.get('/getHomework', async (req,res)=>{
+	try{
+		const token = req.body.jwt
+		const tokenData = await verifyToken(token)
+
+		const homeworks = await Assignment.findOne({registerId:tokenData.uid, class:req.body.publicationId},{"files.data":0})
+		console.log(homeworks)	
+		res.status(200).json(homeworks)
+
+	}catch(err){
+		res.json({ message : err })
+	}
+})
+
+
+
+
 
 router.post('/grade', async (req,res)=>{
 	try{
@@ -90,7 +108,7 @@ router.post('/grade', async (req,res)=>{
 })
 
 
-router.get('/files/:homeworkId', async (req,res)=>{
+router.get('/files/get/:homeworkId', async (req,res)=>{
 	try{
 		const homework = await Assignment.findOne({ "files._id": req.params.homeworkId},{"files" : 1})
 
