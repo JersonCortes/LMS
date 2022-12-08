@@ -2,7 +2,18 @@ const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 const checkAuth = require('../services/auth')
+const { v4: uuidV4 } = require('uuid')
 
+//videocall
+router.get('/', (req, res) => {
+	console.log("entro")
+	res.redirect(`/${uuidV4()}`)
+})
+
+router.get('/:room', (req, res) => {
+	res.render('videocall', { roomId: req.params.room })
+})
+//videocall ends
 router.get('/login',(req,res)=>{
     	res.render('login')
 })

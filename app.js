@@ -12,7 +12,7 @@ require('dotenv').config({ path: 'config/.env' })
 
 const app = express()
 
-https.createServer({
+ https.createServer({
 	cert:fs.readFileSync('cert.pem'),
 	key:fs.readFileSync('key.pem')
 }, app).listen(3000)
@@ -33,6 +33,29 @@ app.set('view engine', 'ejs')
 app.use('/css',express.static(path.resolve(__dirname,'assets/css')))
 app.use('/js',express.static(path.resolve(__dirname,'assets/js')))
 app.use('/img',express.static(path.resolve(__dirname,'assets/img')))
+
+
+//Videocall
+
+
+const server = require('https').Server(app)
+const io = require('socket.io')(server)
+
+console.log(server)
+io.on('connection', socket => {
+
+	console.log("entro")
+  socket.on('join-room', (roomId, userId) => {
+	console.log("entro")
+    socket.join(roomId)
+    socket.to(roomId).broadcast.emit('user-connected', userId)
+
+    socket.on('disconnect', () => {
+      socket.to(roomId).broadcast.emit('user-disconnected', userId)
+    })
+  })
+})
+
 
 //routes
 const routes = require('./api-routes/postulate-routes')
@@ -110,8 +133,6 @@ app.use('/api/ponderation', ponderation)
 const template = require('./api-routes/template')
 
 app.use('/api/template', template)
-
-
 
 
 
