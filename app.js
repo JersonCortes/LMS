@@ -3,10 +3,19 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const path = require('path')
+const https = require('https')
+const fs = require('fs')
+
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0
 
 require('dotenv').config({ path: 'config/.env' })
 
 const app = express()
+
+https.createServer({
+	cert:fs.readFileSync('cert.pem'),
+	key:fs.readFileSync('key.pem')
+}, app).listen(3000)
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -106,4 +115,3 @@ app.use('/api/template', template)
 
 
 
-app.listen(3000)
