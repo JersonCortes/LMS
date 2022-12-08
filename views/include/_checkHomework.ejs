@@ -38,8 +38,9 @@
 
         		 	</div>
 
-			
+					<%if(!filesAndUsers){%>	
 					<input type="hidden" id="idAssignment" name="assignment" value="<%= filesAndUsers[0].class %>">
+					<%}%>
 			</form>
 				<div class="col" id="tableHW">	
 

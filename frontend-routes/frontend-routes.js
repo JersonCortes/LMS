@@ -133,6 +133,34 @@ router.get('/publicationsOne',(req,res)=>{
 
 })
 
+router.get('/template',(req,res)=>{
+
+	    res.render('template',)
+
+})
+
+
+router.get('/templateModify',(req,res)=>{
+	console.log(req.query)
+	function getPublications() {
+	  return axios.get('http://localhost:3000/api/template',{data:{ templateCode:req.query.templateCode,currentClassroom:req.query.currentClassroom}});
+	}
+
+
+	Promise.all([getPublications()])
+	  .then(function (results) {
+	    const publications = results[0].data;
+
+	    
+		res.render('templateModify',{publications: publications})
+	});
+
+})
+
+
+
+
+
 router.get('/createPublication',(req,res)=>{
 
 

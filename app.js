@@ -98,6 +98,11 @@ const ponderation = require('./api-routes/classroomPonderation')
 app.use('/api/ponderation', ponderation)
 
 
+const template = require('./api-routes/template')
+
+app.use('/api/template', template)
+
+
 
 
 

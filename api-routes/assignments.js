@@ -48,6 +48,8 @@ router.post('/',upload.array('files', 4), async (req,res) => {
 
 router.get('/', async (req,res)=>{
 	try{
+		console.log(req.body.assignment)
+		
 		const homeworks = await Assignment.find({class:req.body.assignment},{"files.data":0})
 		res.status(200).json(homeworks)
 	}catch(err){

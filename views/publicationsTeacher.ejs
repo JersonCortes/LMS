@@ -17,8 +17,14 @@
     <body>
         <main class="d-flex flex-nowrap"> 
 			<%- include('include/_navBarTeacher')%>
+	
                 <div class="container" >
-                	
+                       	<form action="/template" method="GET">
+                		<div class="container">
+					<input type = "hidden" name = "classroomId"  id = "classroomId" value ="">
+        				<button type="submit" class="btn btn-primary ">Plantilla</button>
+				</div>
+			</form>		
 			<%- include('include/_publicationTeacher')%>
 
 		</div>
@@ -34,6 +40,8 @@
 		document.getElementById("makePublication").onclick = function () {
        	 		location.href = "/createPublication?classroom="+idClassroom;
        	 	};
+		console.log(idClassroom)
+		document.getElementById("classroomId").value = idClassroom
         </script>
             <script src="js/bootstrap.bundle.min.js"></script>  
             <script src="js/sidebars.js"></script>  
