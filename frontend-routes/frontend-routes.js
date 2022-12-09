@@ -5,12 +5,11 @@ const checkAuth = require('../services/auth')
 const { v4: uuidV4 } = require('uuid')
 
 //videocall
-router.get('/', (req, res) => {
-	console.log("entro")
-	res.redirect(`/${uuidV4()}`)
+router.get('/videochat', (req, res) => {
+	res.redirect(`/videochat/${uuidV4()}`)
 })
 
-router.get('/:room', (req, res) => {
+router.get('/videochat/:room', (req, res) => {
 	res.render('videocall', { roomId: req.params.room })
 })
 //videocall ends

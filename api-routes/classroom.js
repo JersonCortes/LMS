@@ -5,8 +5,6 @@ const Classroom = require('../models/classroom')
 const userStudent = require('../models/userStudent')
 const verifyToken = require('../services/verifyToken')
 const classroomStudent = require('../models/classroomStudent')
-const Assignment = require('../models/assignment')
-const Publication = require('../models/publication')
 const Ponderation = require('../models/classroomPonderation')
 
 router.post('/', async (req,res) => {
@@ -96,56 +94,5 @@ router.get('/:group', async (req,res) => {
 		res.json({ message : err })
 	}	
 })
-
-
-
-router.get('/test/testing', async (req,res) => {
-	try{
-		const classrooms = await classroomStudent.find({ coursing:true })
-		
-		function Tarea(category,grade,student,custom,ponderated){
-
-			this.category=category;
-			this.grade=grade;
-			this.student=student;
-			this.custom=custom;
-			this.ponderated=ponderated;
-		}
-
-		var tareas = []
-
-		classrooms.forEach(async (classroom)=>{
-			//pido todas las tareas de la materia
-			const publications = await Publication.find({ class:classroom.classroom, assignation:true},{title:0,content:0,publicationDate:0})
-
-			const ponderation = await Ponderation.findOne({classroomId:classroom.classroom})
-
-			var partialGrade = 0
-			
-			//Pasamos por cada publicacion
-			publications.forEach(async (publication)=>{
-				//la tarea de la publicacion
-				const assignment = await Assignment.findOne({class:publication._id, registerId:classroom.student},{grade:1})
-				console.log
-				if(assignment!=null){
-					tareas.push(new Tarea(publication.category,assignment.grade,classroom.student,publication.ponderation,(publication.ponderation!=null ? true:false)))
-				}	
-			})
-
-			console.log(tareas)
-			
-			var tareasSinPonderar=tareas.find(homework=>homework.grade>50);	
-
-
-		})
-	
-		res.status(200).json(subjects)
-	}catch(err){
-		res.json({ message : err })
-	}	
-})
-
-
-
 
 module.exports = router

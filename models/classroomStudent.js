@@ -10,7 +10,23 @@ const ClassroomStudent = mongoose.Schema({
 	student: {
 		type: String
 	},
+	firstPartialGrades: [{
+		grade: String,
+		category: String
+	}],
+	secondPartialGrades: [{
+		grade: String,
+		category: String
+	}],
+	thirdPartialGrades: [{
+		grade: String,
+		category: String
+	}],
 	partialGrades: [{
+		grade: String	
+	}],partialGrades: [{
+		grade: String	
+	}],partialGrades: [{
 		grade: String	
 	}],
 	finalGrade: {
