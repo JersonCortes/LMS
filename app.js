@@ -12,10 +12,14 @@ require('dotenv').config({ path: 'config/.env' })
 
 const app = express()
 
- https.createServer({
+const options = {	
 	cert:fs.readFileSync('cert.pem'),
 	key:fs.readFileSync('key.pem')
-}, app).listen(3000)
+}
+
+const server = require('https').createServer(options, app)
+const io = require('socket.io')(server)
+
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -38,20 +42,14 @@ app.use('/img',express.static(path.resolve(__dirname,'assets/img')))
 //Videocall
 
 
-const server = require('https').Server(app)
-const io = require('socket.io')(server)
-
-console.log(server)
 io.on('connection', socket => {
-
-	console.log("entro")
   socket.on('join-room', (roomId, userId) => {
-	console.log("entro")
+	console.log("test")
     socket.join(roomId)
-    socket.to(roomId).broadcast.emit('user-connected', userId)
+    socket.to(roomId).emit('user-connected', userId)
 
     socket.on('disconnect', () => {
-      socket.to(roomId).broadcast.emit('user-disconnected', userId)
+      socket.to(roomId).emit('user-disconnected', userId)
     })
   })
 })
@@ -134,5 +132,11 @@ const template = require('./api-routes/template')
 
 app.use('/api/template', template)
 
+const grade = require('./api-routes/grade')
+
+app.use('/api/grade', grade)
 
 
+
+
+server.listen(3000)

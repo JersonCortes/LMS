@@ -29,6 +29,10 @@ const AssignmentSchema = mongoose.Schema({
 	graded:{
 		type: Boolean,
 		default:false
+	},
+	ponderated:{
+		type: Boolean,
+		default:false
 	}
 
 })
