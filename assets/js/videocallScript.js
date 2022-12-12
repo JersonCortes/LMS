@@ -7,14 +7,16 @@ const myPeer = new Peer(undefined, {
 const myVideo = document.createElement('video')
 myVideo.muted = true
 const peers = {}
+const video = document.getElementById("video")
+const audio = document.getElementById("audio")
+let userStream
 
-
-
-navigator.mediaDevices.getUserMedia({
+const stream = navigator.mediaDevices.getUserMedia({
   video: true,
   audio: true
 }).then(stream => {
   addVideoStream(myVideo, stream)
+  userStream = stream
 
   myPeer.on('call', call => {
     call.answer(stream)
@@ -25,7 +27,6 @@ navigator.mediaDevices.getUserMedia({
   })
 
   socket.on('user-connected', userId => {
-
     connectToNewUser(userId, stream)
   })
 })
@@ -35,9 +36,7 @@ socket.on('user-disconnected', userId => {
 })
 
 myPeer.on('open', id => {
-	console.log("entro")
   socket.emit('join-room', ROOM_ID, id)
-	console.log(socket.emit)
 })
 
 function connectToNewUser(userId, stream) {
@@ -60,3 +59,26 @@ function addVideoStream(video, stream) {
   })
   videoGrid.append(video)
 }
+
+
+video.addEventListener('click', ()=>{
+	const videoTrack = userStream.getTracks().find(track => track.kind === 'video')
+	if(videoTrack.enabled){
+		videoTrack.enabled = false
+	}else{
+		videoTrack.enabled = true
+
+	}
+	console.log(videoTrack)
+})
+
+audio.addEventListener('click', ()=>{
+	const audioTrack = userStream.getTracks().find(track => track.kind === 'audio')
+	if(audioTrack.enabled){
+		audioTrack.enabled = false
+	}else{
+		audioTrack.enabled = true
+
+	}
+	console.log(videoTrack)
+})

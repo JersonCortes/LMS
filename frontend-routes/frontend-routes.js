@@ -25,7 +25,32 @@ router.get('/postulationForm',(req,res)=>{
     	res.render('postulation_form')
 })
 
+router.get('/kardex',checkAuth(['student']),(req,res)=>{
 
+	function getSchedule() {
+	  return axios.get("https://localhost:3000/api/grade/kardex",{data:{ jwt:req.cookies.jwt}});
+	}
+	
+	Promise.all([getSchedule()])
+	  .then(function (results) {
+	    const kardex = results[0].data;
+	
+	    res.render('grades',{kardex: kardex})
+	});
+})
+router.get('/grades',checkAuth(['student']),(req,res)=>{
+	//checar que agarre params
+	function getSchedule() {
+	  return axios.get("https://localhost:3000/api/grade/subjects",{data:{ jwt:req.cookies.jwt, classroom:req.query.classroomId}});
+	}
+	
+	Promise.all([getSchedule()])
+	  .then(function (results) {
+	    const grades = results[0].data;
+		  console.log(grades)
+	    res.render('gradesSubject',{kardex: grades})
+	});req.params.user
+})
 router.get('/schedule',checkAuth(['student','teacher']),(req,res)=>{
 
 	function getSchedule() {
@@ -40,7 +65,20 @@ router.get('/schedule',checkAuth(['student','teacher']),(req,res)=>{
 	    res.render('schedule',{schedule: schedule})
 	});
 })
+router.get('/scheduleTeacher',checkAuth(['teacher']),(req,res)=>{
 
+	function getSchedule() {
+	  return axios.get("https://localhost:3000/api/assignSchedule/teacherSchedule",{data:{ jwt:req.cookies.jwt}});
+	}
+
+	
+	Promise.all([getSchedule()])
+	  .then(function (results) {
+	    const schedule = results[0].data;
+
+	    res.render('schedule',{schedule: schedule})
+	});
+})
 router.get('/subjects',(req,res)=>{
  
 	let url = "https://localhost:3000/api/classrooms/searchSubjects"
@@ -191,9 +229,18 @@ router.get('/createPublication',(req,res)=>{
 })
 
 
-router.get('/calendar',checkAuth(['student']),(req,res)=>{
-    	
-	res.render('calendar')
+router.get('/calendar',checkAuth(['student','teacher']),(req,res)=>{
+	function getAllHomeworks() {
+	  return axios.get('https://localhost:3000/api/assignment/role',{data:{ jwt:req.cookies.jwt}});
+		
+	}
+	
+	Promise.all([getAllHomeworks()])
+	  .then(function (results) {
+	    const role = results[0].data;
+	    res.render('calendar',{role: role})
+	});
+
 })
 
 router.get('/checkHomework',checkAuth(['teacher']),(req,res)=>{

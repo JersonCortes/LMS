@@ -17,12 +17,26 @@
     <body>
         <main class="d-flex flex-nowrap overflow-auto"> 
 			<%- include('include/_navBar')%>
-                <div class="container" >
-                	
+                <div class="container overflow-auto" >
+                	          	<form action="/grades" method="GET">
+                		<div class="container">
+					<input type = "hidden" name = "classroomId"  id = "classroomId" value ="">
+        				<button type="submit" class="btn btn-primary ">Checar calificaciones</button>
+				</div>
+			</form>		
 			<%- include('include/_publication')%>
 
 		</div>
             </div>
+            <script src="js/bootstrap.bundle.min.js"></script>  
+            <script src="js/sidebars.js"></script>  	
+	    <script type="text/javascript">
+		const queryString = window.location.search;
+		const urlParams = new URLSearchParams(queryString);
+		const idClassroom = urlParams.get('publicationId')
+	
+		document.getElementById("classroomId").value = idClassroom
+        </script>
             <script src="js/bootstrap.bundle.min.js"></script>  
             <script src="js/sidebars.js"></script>  
         </main>

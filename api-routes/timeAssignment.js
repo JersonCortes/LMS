@@ -58,9 +58,11 @@ router.patch('/', async (req,res) => {
 
 router.post('/festiveDate', async (req,res) => {
 	try{
+		console.log(req.body)
 		const festiveDate = new FestiveDate({
 			event: req.body.event,
 			date: req.body.date,
+			color:req.body.color
 		})
 		
 		const savedFestiveDate = await festiveDate.save()

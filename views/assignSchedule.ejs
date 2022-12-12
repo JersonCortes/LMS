@@ -87,7 +87,7 @@
 			let semester = semesterSelector.options[semesterSelector.selectedIndex].value;
 
 			for(let i=0;i<groupSelector.children.length-1;i++){
-				if(document.getElementById('groupSelector'+i).value.substring(1)==semester){
+				if(document.getElementById('groupSelector'+i).value.substring(0,1)==semester){
 					document.getElementById('groupSelector'+i).hidden = false	
 				}else{
 					document.getElementById('groupSelector'+i).hidden = true	

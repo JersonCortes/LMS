@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 
+const verifyToken = require('../services/verifyToken')
 const classroomStudent = require('../models/classroomStudent')
 const Assignment = require('../models/assignment')
 const Publication = require('../models/publication')
@@ -516,7 +517,12 @@ router.get('/endSemester', async (req,res) => {
 
 				console.log(semesterGrade)	
 
-                	//await classroomStudent.findByIdAndUpdate(classroom._id,{finalGrade:semesterGrade})
+                	await classroomStudent.findByIdAndUpdate(classroom._id,{finalGrade:semesterGrade})
+			if(semesterGrade>=70){
+                		await classroomStudent.findByIdAndUpdate(classroom._id,{passed:true,coursing:false})
+			}else{
+                		await classroomStudent.findByIdAndUpdate(classroom._id,{passed:false,coursing:false})
+			}
 		})
 	try{
 					res.status(200).json(subjects)
@@ -527,6 +533,69 @@ router.get('/endSemester', async (req,res) => {
 })
 
 
+router.get('/kardex', async (req,res) => {
+		const token = req.body.jwt
+		const tokenData = await verifyToken(token)
+		const classrooms = await classroomStudent.aggregate([
+			  {
+			    '$match': {
+			      'student': tokenData.uid
+			    }
+			  }, {
+			    '$project': {
+			      'student': 1, 
+			      'partialGrades': 1, 
+			      'finalGrade': 1, 
+			      'group': 1
+			    }
+			  }, {
+			    '$lookup': {
+			      'from': 'classrooms', 
+			      'localField': 'group', 
+			      'foreignField': 'group', 
+			      'as': 'subject'
+			    }
+			  }, {
+			    '$project': {
+			      'subject.teacher': 0, 
+			      'subject.group': 0, 
+			      'subject._id': 0
+			    }
+			  }
+			])
+	try{
+		res.status(200).json(classrooms)
+	}catch(err){
+		res.json({ message : err })
+	}	
 
+})
+router.get('/subjects', async (req,res) => {
+		const token = req.body.jwt
+		const tokenData = await verifyToken(token)
+		const classrooms = await classroomStudent.aggregate([
+			  {
+			    '$match': {
+			      'student': tokenData.uid,
+			      'classroom':req.body.classroom 
+			    }
+			  },
+			{'$project': {
+			      'partialGrades': 1, 
+			      'firstPartialGrades': 1, 
+			      'secondPartialGrades': 1, 
+			      'thirdPartialGrades': 1 
+			    }
+			  }
+			])
+		
+
+	try{
+		res.status(200).json(classrooms)
+	}catch(err){
+		res.json({ message : err })
+	}	
+
+})
 module.exports = router
 
