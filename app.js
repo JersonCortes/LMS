@@ -136,7 +136,9 @@ const grade = require('./api-routes/grade')
 
 app.use('/api/grade', grade)
 
+const promote = require('./api-routes/promote')
 
+app.use('/api/promote', promote)
 
 
 server.listen(3000)
