@@ -6,6 +6,7 @@ const userStudent = require('../models/userStudent')
 const verifyToken = require('../services/verifyToken')
 const classroomStudent = require('../models/classroomStudent')
 const Ponderation = require('../models/classroomPonderation')
+const { stringify } = require('uuid')
 
 router.post('/', async (req,res) => {
 	try{
@@ -84,6 +85,21 @@ router.get('/', async (req,res) => {
 	}	
 })
 
+router.get('/searchKardex', async (req,res) => {
+	try{
+		const token = req.body.jwt
+		const tokenData = await verifyToken(token)
+		
+
+		const grades = await classroomStudent.find({student:tokenData.uid},{})
+		console.log(grades)	
+
+		res.status(200).json(classroomStudent)
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
+
 router.get('/:group', async (req,res) => {
 	try{
 	console.log("Grupo"+req.params.group)
@@ -94,5 +110,6 @@ router.get('/:group', async (req,res) => {
 		res.json({ message : err })
 	}	
 })
+
 
 module.exports = router

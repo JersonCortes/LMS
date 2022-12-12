@@ -6,6 +6,9 @@ const FestiveDates = mongoose.Schema({
 	},
 	date: {
 		type: Date
+	},
+	color: {
+		type: String
 	}
 })
 

@@ -24,10 +24,6 @@ const ClassroomStudent = mongoose.Schema({
 	}],
 	partialGrades: [{
 		grade: String	
-	}],partialGrades: [{
-		grade: String	
-	}],partialGrades: [{
-		grade: String	
 	}],
 	finalGrade: {
 		type: String

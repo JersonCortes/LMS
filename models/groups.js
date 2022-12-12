@@ -6,6 +6,9 @@ const GroupSchema = mongoose.Schema({
 	},
 	schedule:{
 		type:[String]
+	},
+	videoCalls:{
+		type:[String]
 	}
 })
 

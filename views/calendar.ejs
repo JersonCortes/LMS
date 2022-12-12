@@ -19,7 +19,7 @@
             
 			<%- include('include/_navBar')%>
                 <div class="container" >
-                	
+			<input type="hidden" id="role" value="<%=role.role%>">	
 			<div id="calendar"></div>
 		</div>
             </div>
@@ -336,11 +336,16 @@
 
 		      	  	var partialsDates	
 		      	 	var festiveDates
+				var homeworkDates
 				requests()
 				async function requests(){
-
+  					const role = document.getElementById('role');
 					let festiveDates = await festiveDatesRequest()
 					let partialsDates = await partialDatesRequest()
+					if(role=="student"){
+						let homeworksDates = await homeworksDatesRequest()
+
+					}
 					
 					console.log(data)
 					var calendar = new Calendar('#calendar', data);
@@ -352,9 +357,9 @@
 		      		 		test.onload = () => {
 		      		 			festiveDates = JSON.parse(test.responseText);
 		      		 			festiveDates.forEach(function (festiveDates,index){
-							data.push({eventName:festiveDates.event,calendar:'other',color:'green',date:moment(festiveDates.date).add(1,'d')})
+							data.push({eventName:festiveDates.event,calendar:'other',color:festiveDates.color,date:moment(festiveDates.date).add(1,'d')})
 							resolve(festiveDates)
-						   })
+						   	})
 						}
 		      		 		test.open("GET", "/api/timeAssignment/festiveDate");
 		      		 		test.responseType = "text";
@@ -379,8 +384,25 @@
 					})
 				}
 
-			
-		
+					function homeworksDatesRequest(){
+						return new Promise(function (resolve,reject){
+
+			      	 			const xhr = new XMLHttpRequest();
+			      	 			xhr.onload = () => {
+			      	 			  	homeworkDates = JSON.parse(xhr.responseText);
+								homeworkDates.forEach(function(homeworks,index){
+									data.push({eventName:homeworks.title,calendar:'other',color:'orange',date:moment(homeworks.deliveryDate).add(1,'d')})
+								})
+								console.log(homeworkDates)
+								resolve(homeworkDates)
+			      	 			}
+			      	 			xhr.open("GET", "/api/assignment/userHomework");
+							xhr.withCredentials = true;
+			      	 			xhr.responseType = "text";
+			      	 			xhr.send();	
+							console.log("GOGOGO")
+						})
+					}
 			
 			
 			}();

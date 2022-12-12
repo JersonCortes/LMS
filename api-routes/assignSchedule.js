@@ -54,5 +54,54 @@ router.get('/', async (req,res) => {
 	}	
 })
 
+router.get('/teacherSchedule', async (req,res) => {
+	try{
+		const token = req.body.jwt
+		const tokenData = await verifyToken(token)
+
+	const teacherSchedule = await Classroom.aggregate([
+		  {
+		    '$match': {
+		      'teacher': '6386e10775171e346444f72e'
+		    }
+		  }, {
+		    '$lookup': {
+		      'from': 'groups', 
+		      'localField': 'group', 
+		      'foreignField': 'group', 
+		      'as': 'schedule'
+		    }
+		  }, {
+		    '$project': {
+		      'teacher': 0
+		    }
+		  }
+		])
+	let finalTeacherSchedule=new Array(45)
+	let finalTeacherVideoCalls=new Array(45)
+	teacherSchedule.forEach((classroom)=>{
+			console.log(classroom)
+		classroom.schedule.forEach((schedule)=>{
+			
+			schedule.schedule.forEach((hour,index)=>{
+				console.log(hour)
+				if(classroom.subject==hour){
+					finalTeacherSchedule[index]= classroom.subject
+					finalTeacherVideoCalls[index]= schedule.videoCalls[index]
+				}
+		
+			})
+		})
+	})
+
+		let completeSchedule={
+			schedule:finalTeacherSchedule,
+			videoCalls:finalTeacherVideoCalls
+		}
+		res.json(completeSchedule)
+	}catch(err){
+		res.json({ message : err })
+	}	
+})
 
 module.exports = router

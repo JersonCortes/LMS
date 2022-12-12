@@ -5,7 +5,10 @@ const fs = require('fs')
 
 const Assignment = require('../models/assignment')
 const verifyToken = require('../services/verifyToken')
+const Groups = require('../models/groups')
+const classroomStudent = require('../models/classroomStudent')
 
+const Publications = require('../models/publication')
 const UserStudent = require('../models/userStudent')
 const upload = multer({ dest: 'uploads/'})
 
@@ -126,4 +129,32 @@ router.get('/files/get/:homeworkId', async (req,res)=>{
 	}
 })
 
+router.get('/userHomework', async (req,res)=>{
+	try{
+		const token = req.cookies.jwt
+		const tokenData = await verifyToken(token)
+		console.log(tokenData)
+		const group = await  UserStudent.findById(tokenData.uid,{group:1})
+		const classroom = await  classroomStudent.findOne({student: tokenData.uid,group:group.group},{classroom:1})
+		const homework = await Publications.find({ class:classroom.classroom,assignation:true},{title:1,deliveryDate:1})
+		console.log(homework)
+		res.json(homework)
+			
+	}catch(err){
+		res.json({ message : err })
+	}
+})
+router.get('/role', async (req,res)=>{
+	try{
+		const token = req.body.jwt
+		const tokenData = await verifyToken(token)
+		const role = await  UserStudent.findById(tokenData.uid,{role:1})
+		console.log("test"+role)
+		res.json(role)
+			
+			
+	}catch(err){
+		res.json({ message : err })
+	}
+})
 module.exports = router
