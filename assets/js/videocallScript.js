@@ -9,6 +9,8 @@ myVideo.muted = true
 const peers = {}
 const video = document.getElementById("video")
 const audio = document.getElementById("audio")
+const chat = document.getElementById("chat")
+const raiseHand = document.getElementById("raise-hand")
 let userStream
 
 const stream = navigator.mediaDevices.getUserMedia({
@@ -37,6 +39,17 @@ socket.on('user-disconnected', userId => {
 
 myPeer.on('open', id => {
   socket.emit('join-room', ROOM_ID, id)
+})
+
+raiseHand.addEventListener('click',()=>{
+	console.log("entroElboton")
+	socket.emit('raise-hand', ROOM_ID)
+})
+
+socket.on('raised-hand', userId => {
+	document.getElementById("chat").innerHTML = "<p>Han levantado la mano, para pedir la palabra</p>";  
+	console.log("Llego el mensaje")
+
 })
 
 function connectToNewUser(userId, stream) {
@@ -69,7 +82,6 @@ video.addEventListener('click', ()=>{
 		videoTrack.enabled = true
 
 	}
-	console.log(videoTrack)
 })
 
 audio.addEventListener('click', ()=>{
@@ -80,5 +92,4 @@ audio.addEventListener('click', ()=>{
 		audioTrack.enabled = true
 
 	}
-	console.log(videoTrack)
 })
