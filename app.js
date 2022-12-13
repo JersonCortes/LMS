@@ -44,13 +44,20 @@ app.use('/img',express.static(path.resolve(__dirname,'assets/img')))
 
 io.on('connection', socket => {
   socket.on('join-room', (roomId, userId) => {
-	console.log("test")
+
     socket.join(roomId)
     socket.to(roomId).emit('user-connected', userId)
 
-    socket.on('disconnect', () => {
-      socket.to(roomId).emit('user-disconnected', userId)
+    socket.on('raise-hand',()=>{
+	console.log("En el server")
+	socket.to(roomId).emit('raised-hand',userId)
+
     })
+
+    socket.on('disconnect', () => {
+    	socket.to(roomId).emit('user-disconnected', userId)
+    })
+	  
   })
 })
 
@@ -139,6 +146,10 @@ app.use('/api/grade', grade)
 const promote = require('./api-routes/promote')
 
 app.use('/api/promote', promote)
+
+const assistance = require('./api-routes/assistence')
+
+app.use('/api/assistance', assistance)
 
 
 server.listen(3000)
