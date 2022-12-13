@@ -10,7 +10,16 @@ router.get('/videochat', (req, res) => {
 })
 
 router.get('/videochat/:room', (req, res) => {
-	res.render('videocall', { roomId: req.params.room })
+	function getSchedule() {
+	  return axios.get("https://localhost:3000/api/assistance",{data:{ jwt:req.cookies.jwt, room:req.params.room}});
+	}
+	
+	Promise.all([getSchedule()])
+	  .then(function (results) {
+	console.log("AAAAAAAA")	
+	  res.render('videocall', { roomId: req.params.room })
+	});
+
 })
 //videocall ends
 router.get('/login',(req,res)=>{
